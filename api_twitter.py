@@ -35,7 +35,7 @@ tweets_df = pd.DataFrame()
 tweets_list = []
 # populate the dataframe
 con = sqlite3.connect(config['database'])
-
+cursor = con.cursor()
 for tweet in tweets_copy:
     hashtags = []
     try:
@@ -58,15 +58,15 @@ for tweet in tweets_copy:
     print('type: ', type(tweet.id))
     print('time: ', datetime, ' Latitude: ', latitude, ' Longitude: ', longitude, ' depth: ', depth)
     print('mag: ', magnitude, ' tweet_id: ', tweet.id);
-    entries = [datetime,   latitude, longitude, depth, magnitude, None, True, tweet.id, False, 0]
+    entries = [datetime,   latitude, longitude, depth, magnitude, 0, True, tweet.id, False, 0]
 
     add_entry = '''INSERT INTO catalog(datetime, latitude, longitude, depth, mag, eq_id, tweet, tweet_id, repeater, sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
     cursor.execute(add_entry,entries)
                                 
     tweets_df = tweets_df.reset_index(drop=True)
 
-add_entry = '''INSERT INTO catalog(datetime, latitude, longitude, depth, mag, eq_id, tweet, tweet_id, repeater, sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
-cursor.execute(add_entry,entries)
+con.commit()
+con.close()
 
 print('N: ', len(tweets_df))
 print(tweets_df.tail())
