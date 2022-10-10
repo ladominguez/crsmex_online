@@ -23,7 +23,11 @@ def create_table(filename):
 		longitude   FLOAT                   NOT NULL,
 		depth       FLOAT                   NOT NULL,
 		mag         FLOAT                   NOT NULL,
-		eq_id       INTEGER                 NOT NULL
+		eq_id       INTEGER                 NOT NULL,
+        tweet       BOOLEAN                 NOT NULL,
+        tweet_id    VARCHAR(30),
+        repeater    BOOLEAN                 NOT NULL,
+        sequence_id INTEGER                  
     )
     """
     con.execute(create_table)
@@ -38,7 +42,11 @@ with open(config['catalog'],'r') as f:
     for line in tqdm(f):
         entries = line.split()
         entries[0:2] = ['T'.join(entries[0:2])] # merges date and time columns
-        add_entry = '''INSERT INTO catalog(datetime, latitude, longitude, depth, mag, eq_id) VALUES (?,?,?,?,?,?);'''
+        entries.append(False) # tweet (False for catalog) 
+        entries.append(None)  # tweet_id None for catalog
+        entries.append(False) # Set repeater to false at the beginning
+        entries.append(None)  # Set sequence_id to None
+        add_entry = '''INSERT INTO catalog(datetime, latitude, longitude, depth, mag, eq_id, tweet, tweet_id, repeater, sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
         cursor.execute(add_entry,entries)
 
 con.commit()
