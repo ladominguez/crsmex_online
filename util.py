@@ -5,6 +5,8 @@ def render_tweet_info(tweet):
 	content = text.split()
 	if not content[0] == 'SISMO':
 		raise ValueError('Tweet is not an earthquake. ' + text)
+	if 'http' in text:
+		raise ValueError('Earthquake already reported.')
 	for k, word in enumerate(content):
 		if word == 'Magnitud':
 			magnitude = content[k+1]
