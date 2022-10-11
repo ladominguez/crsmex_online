@@ -1,5 +1,6 @@
 import tweepy as tw
 import pandas as pd
+import logging
 import os
 import json
 import sqlite3
@@ -8,6 +9,12 @@ from util import *
 # load configuration
 config_file = open('config.json')
 config = json.load(config_file) 
+
+# Logging configuration
+FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
+logging.basicConfig(format=FORMAT)
+log = logging.getLogger('CRSMEX')
+log.setLevel(logging.INFO)
 
 # your Twitter API key and API secret
 my_api_key = os.environ["API_KEY_TWITTER"]
@@ -19,7 +26,7 @@ userID = 'SismologicoMX'
 
 
 tweets = api.user_timeline(screen_name=userID,
-                                    count=500,
+                                    count=5,
                                     include_rts = False,
                                     tweet_mode = 'extended')
 
@@ -56,6 +63,8 @@ for tweet in reversed(tweets_copy):
     tweets_df = pd.concat([tweets_df,pd.DataFrame({'tweet_id': tweet.id, 
                                 'tweet_time': tweet.created_at,
                                 'text': tweet.full_text}, index=[0])])
+    
+    log.info('Reading tweets.')
      
     print("====================================================================");
     print(tweet.full_text)
@@ -80,8 +89,7 @@ results = cursor.fetchall()
 
 con.commit()
 con.close()
-print('Entries: ', len(results))
-print('Number of tweets: ', len(tweets_df))
-print('New earthquakes: ', new)
+log.info('Number of tweets: %d - new earthquakes: %d, total number of events: %d', len(tweets_df),new,len(results))
+#log.info('Number of tweets: %d ', len(tweets_df), 'New earthquakes: ', new, 'Events in the database: ', len(results))
 
 
