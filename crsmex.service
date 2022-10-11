@@ -1,0 +1,14 @@
+[Unit]
+Description=CRSMEX Online
+After=network.target
+
+[Service]
+Type=simple
+User=antonio
+WorkingDirectory=/home/antonio/crsmex-online/
+ExecStartPre=/home/antonio/miniconda3/condabin/conda activate twitter
+ExecStart=/home/antonio/miniconda3/envs/twitter/bin/python api_tweeter.py
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
