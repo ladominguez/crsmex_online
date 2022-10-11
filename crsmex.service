@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=antonio
-WorkingDirectory=/home/antonio/crsmex-online/
+WorkingDirectory=/home/antonio/crsmex_online/
 ExecStartPre=/home/antonio/miniconda3/condabin/conda activate twitter
 ExecStart=/home/antonio/miniconda3/envs/twitter/bin/python api_tweeter.py
 Restart=on-failure
