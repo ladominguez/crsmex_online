@@ -7,8 +7,14 @@ import json
 import sqlite3
 from util import *
 
+# your Twitter API key and API secret
+my_api_key = os.environ["API_KEY_TWITTER"]
+my_api_secret = os.environ["API_KEY_SECRET_TWITTER"]
+root_crsmex = os.environ["ROOT_CRSMEX"]
+
+
 # load configuration
-config_file = open('/home/antonio/crsmex_online/config.json')
+config_file = open(os.path.join(root_crsmex,'config.json'))
 config = json.load(config_file) 
 
 # Logging configuration
@@ -17,16 +23,16 @@ logging.basicConfig(format=FORMAT)
 log = logging.getLogger('CRSMEX')
 log.setLevel(logging.INFO)
 
-# your Twitter API key and API secret
-my_api_key = os.environ["API_KEY_TWITTER"]
-my_api_secret = os.environ["API_KEY_SECRET_TWITTER"]
+fh = logging.FileHandler(os.path.join(root_crsmex,'logger.txt'))
+fh.setLevel(logging.DEBUG)
 
 
-auth = tw.OAuthHandler(my_api_key, my_api_secret)
-api = tw.API(auth, wait_on_rate_limit=True)
+
 userID = 'SismologicoMX'
 
 while True:
+    auth = tw.OAuthHandler(my_api_key, my_api_secret)
+    api = tw.API(auth, wait_on_rate_limit=True)
     tweets = api.user_timeline(screen_name=userID,
                                         count=5,
                                         include_rts = False,
@@ -43,7 +49,7 @@ while True:
     tweets_df = pd.DataFrame()
     tweets_list = []
     # populate the dataframe
-    con = sqlite3.connect(config['database'])
+    con = sqlite3.connect(os.path.join(root_crsmex,config['database']))
     cursor = con.cursor()
     print('Tweet copy: ', type(tweets_copy))
 
