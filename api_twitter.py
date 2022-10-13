@@ -2,12 +2,13 @@ import tweepy as tw
 import pandas as pd
 import logging
 import os
+import time as tt
 import json
 import sqlite3
 from util import *
 
 # load configuration
-config_file = open('config.json')
+config_file = open('/home/antonio/crsmex_online/config.json')
 config = json.load(config_file) 
 
 # Logging configuration
@@ -19,6 +20,7 @@ log.setLevel(logging.INFO)
 # your Twitter API key and API secret
 my_api_key = os.environ["API_KEY_TWITTER"]
 my_api_secret = os.environ["API_KEY_SECRET_TWITTER"]
+
 
 auth = tw.OAuthHandler(my_api_key, my_api_secret)
 api = tw.API(auth, wait_on_rate_limit=True)
@@ -90,7 +92,7 @@ while True:
     con.commit()
     con.close()
     log.info('Number of tweets: %d - new earthquakes: %d, total number of events: %d', len(tweets_df),new,len(results))
-    sleep(900)
+    tt.sleep(900)
 #log.info('Number of tweets: %d ', len(tweets_df), 'New earthquakes: ', new, 'Events in the database: ', len(results))
 
 

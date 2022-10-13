@@ -4,7 +4,6 @@ After=network.target
 
 [Service]
 Type=simple
-User=antonio
 WorkingDirectory=/home/antonio/crsmex_online/
 ExecStart=/bin/bash /home/antonio/crsmex_online/run_crsmex.sh
 Restart=on-failure
