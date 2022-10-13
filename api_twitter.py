@@ -2,10 +2,12 @@ import tweepy as tw
 import pandas as pd
 import logging
 import os
+import platform
 import time as tt
 import json
 import sqlite3
 from util import *
+
 
 # your Twitter API key and API secret
 my_api_key = os.environ["API_KEY_TWITTER"]
@@ -19,20 +21,26 @@ config = json.load(config_file)
 
 # Logging configuration
 FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
-logging.basicConfig(format=FORMAT)
-log = logging.getLogger('CRSMEX')
+log = logging.getLogger(name='CRSMEX')
 log.setLevel(logging.INFO)
+logging.basicConfig(format=FORMAT)
 
 fh = logging.FileHandler(os.path.join(root_crsmex,'logger.txt'))
+fh.setFormatter(logging.Formatter(FORMAT))
 fh.setLevel(logging.DEBUG)
+log.addHandler(fh)
 
-
+if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':
+    from systemd.journal import JournalHandler
+    log.addHandler(JournalHandler())
+    log.setLevel(logging.DEBUG)
 
 userID = 'SismologicoMX'
 
 while True:
     auth = tw.OAuthHandler(my_api_key, my_api_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
+    log.info('Reading tweets.')
     tweets = api.user_timeline(screen_name=userID,
                                         count=5,
                                         include_rts = False,
@@ -72,7 +80,6 @@ while True:
                                     'tweet_time': tweet.created_at,
                                     'text': tweet.full_text}, index=[0])])
         
-        log.info('Reading tweets.')
         
         print("====================================================================");
         print(tweet.full_text)
