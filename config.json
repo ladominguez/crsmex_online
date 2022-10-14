@@ -1,6 +1,6 @@
 {
 "database" : "catalog.db",
 "input_crsmex" : "inputs/time_intervals_xc9500_coh9500.filter.dat",
-"catalog" : "CATALOG_2001_2022.TMP",
+"catalog" : "CATALOG_2001_2022.DAT",
 "time_zone" : "America/Mexico_City"
 }
