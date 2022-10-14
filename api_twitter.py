@@ -7,7 +7,8 @@ import time as tt
 import json
 import sqlite3
 from util import *
-
+from datetime import datetime
+import pytz
 
 # your Twitter API key and API secret
 my_api_key = os.environ["API_KEY_TWITTER"]
@@ -18,6 +19,7 @@ root_crsmex = os.environ["ROOT_CRSMEX"]
 # load configuration
 config_file = open(os.path.join(root_crsmex,'config.json'))
 config = json.load(config_file) 
+local = pytz.timezone(config['time_zone'])
 
 # Logging configuration
 FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
@@ -30,7 +32,7 @@ fh.setFormatter(logging.Formatter(FORMAT))
 fh.setLevel(logging.DEBUG)
 log.addHandler(fh)
 
-if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':
+if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':     #  ubuntu-1cpu-1gb-us-nyc1 upcloud server
     from systemd.journal import JournalHandler
     log.addHandler(JournalHandler())
     log.setLevel(logging.DEBUG)
@@ -71,8 +73,8 @@ while True:
         except:
             pass
         try:
-            time, latitude, longitude, depth, magnitude = render_tweet_info(tweet)
-            datetime = time.strftime("%Y/%m/%dT%H:%M:%S")
+            time_utc, latitude, longitude, depth, magnitude = render_tweet_info(tweet,config['time_zone'])
+            datetime = time_utc.strftime("%Y/%m/%dT%H:%M:%S")
         except:
             continue
 
@@ -80,14 +82,15 @@ while True:
                                     'tweet_time': tweet.created_at,
                                     'text': tweet.full_text}, index=[0])])
         
+
         
         print("====================================================================");
         print(tweet.full_text)
         print('type: ', type(tweet.id))
         print('time: ', datetime, ' Latitude: ', latitude, ' Longitude: ', longitude, ' depth: ', depth)
         print('mag: ', magnitude, ' tweet_id: ', tweet.id);
-        entries = [datetime,   latitude, longitude, depth, magnitude, 0, True, tweet.id, False, 0]
-        exit()
+        entries = [datetime, time_utc.timestamp(), latitude, longitude, depth, magnitude, 0, True, tweet.id, tweet.created_at,False, 0, tweet.full_text]
+        
         cursor.execute("SELECT rowid FROM catalog WHERE tweet_id = ?", (tweet.id,))
         db_result=cursor.fetchone()
         if db_result is not None:
@@ -95,13 +98,12 @@ while True:
         else:
             new +=1
             print('Inserting')
-            add_entry = '''INSERT INTO catalog(datetime, latitude, longitude, depth, mag, eq_id, tweet, tweet_id, repeater, sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
+            add_entry = '''INSERT INTO catalog(datetime, unixtime, latitude, longitude, depth, mag, eq_id, tweet, tweet_id, post_time, repeater, sequence_id, tweet_text) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);'''
             cursor.execute(add_entry,entries)
                                     
         tweets_df = tweets_df.reset_index(drop=True)
     cursor.execute("SELECT * FROM catalog")
     results = cursor.fetchall()
-
 
     con.commit()
     con.close()

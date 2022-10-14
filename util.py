@@ -1,6 +1,7 @@
 from datetime import datetime
+import pytz
 
-def render_tweet_info(tweet):
+def render_tweet_info(tweet, t_zone):
 	text = tweet.full_text
 	content = text.split()
 	if not content[0] == 'SISMO':
@@ -11,7 +12,7 @@ def render_tweet_info(tweet):
 		if word == 'Magnitud':
 			magnitude = content[k+1]
 		elif '/' in word and 'http' not in word:
-			date= '20' + word
+			date= '/'.join(['20'+word.split('/')[2],word.split('/')[1],word.split('/')[0]])
 		elif ':' in word and 'http' not in word:
 			time_str = word
 		elif word == 'Lat':
@@ -23,5 +24,6 @@ def render_tweet_info(tweet):
 		else:
 			continue
 	
-	time = datetime.strptime(date + ',' + time_str, '%Y/%m/%d,%H:%M:%S')
-	return (time, latitude, longitude, depth, magnitude)
+	time_local = datetime.strptime(date + ',' + time_str, '%Y/%m/%d,%H:%M:%S')
+	time_utc = pytz.timezone(t_zone).localize(time_local, is_dst=None).astimezone(pytz.utc)
+	return (time_utc, latitude, longitude, depth, magnitude)
