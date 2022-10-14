@@ -87,6 +87,7 @@ while True:
         print('time: ', datetime, ' Latitude: ', latitude, ' Longitude: ', longitude, ' depth: ', depth)
         print('mag: ', magnitude, ' tweet_id: ', tweet.id);
         entries = [datetime,   latitude, longitude, depth, magnitude, 0, True, tweet.id, False, 0]
+        exit()
         cursor.execute("SELECT rowid FROM catalog WHERE tweet_id = ?", (tweet.id,))
         db_result=cursor.fetchone()
         if db_result is not None:
