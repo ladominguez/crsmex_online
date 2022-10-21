@@ -1,0 +1,7 @@
+*.h5
+keys
+catalog.db
+logger.txt
+*.sac
+*/*.sac
+tmp/*
