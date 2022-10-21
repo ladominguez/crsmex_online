@@ -2,3 +2,6 @@
 keys
 catalog.db
 logger.txt
+*.sac
+*/*.sac
+tmp/*
