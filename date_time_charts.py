@@ -136,12 +136,8 @@ y = [1.3, 2.2, 4.1, 3]
 fig = pygmt.Figure()
 fig.plot(
     projection="X10c/5c",
-<<<<<<< HEAD
-    region=[datetime.datetime(2020, 1, 1), datetime.datetime(2021, 3, 1), 0, 6],
-=======
     region=[datetime.datetime(2020, 1, 1),
             datetime.datetime(2021, 3, 1), 0, 6],
->>>>>>> get_data_from_stp
     frame=["WSen", "afg"],
     x=x,
     y=y,
@@ -170,12 +166,8 @@ y = [4, 5, 6, 8, 6, 3, 5]
 fig = pygmt.Figure()
 fig.plot(
     projection="X10c/10c",
-<<<<<<< HEAD
-    region=[datetime.datetime(2017, 12, 31), datetime.datetime(2019, 12, 31), 0, 10],
-=======
     region=[datetime.datetime(2017, 12, 31),
             datetime.datetime(2019, 12, 31), 0, 10],
->>>>>>> get_data_from_stp
     frame=["WSen", "ag"],
     x=x,
     y=y,
@@ -202,12 +194,8 @@ y = [4, 7, 5, 6]
 fig = pygmt.Figure()
 fig.plot(
     projection="X10c/10c",
-<<<<<<< HEAD
-    region=[datetime.datetime(2020, 1, 1), datetime.datetime(2021, 4, 1), 0, 10],
-=======
     region=[datetime.datetime(2020, 1, 1),
             datetime.datetime(2021, 4, 1), 0, 10],
->>>>>>> get_data_from_stp
     frame=["WSen", "ag"],
     x=x,
     y=y,
@@ -225,23 +213,15 @@ fig.show()
 # dataset before passing it as a paramater. However, ``np.array`` objects use less
 # memory and allow developers to specify datatypes.
 
-<<<<<<< HEAD
-x = np.array(["2010-06-01", "2011-06-01T12", "2012-01-01T12:34:56"], dtype="datetime64")
-=======
 x = np.array(["2010-06-01", "2011-06-01T12",
               "2012-01-01T12:34:56"], dtype="datetime64")
->>>>>>> get_data_from_stp
 y = [2, 7, 5]
 
 fig = pygmt.Figure()
 fig.plot(
     projection="X10c/10c",
-<<<<<<< HEAD
-    region=[datetime.datetime(2010, 1, 1), datetime.datetime(2012, 6, 1), 0, 10],
-=======
     region=[datetime.datetime(2010, 1, 1),
             datetime.datetime(2012, 6, 1), 0, 10],
->>>>>>> get_data_from_stp
     frame=["WS", "ag"],
     x=x,
     y=y,
@@ -326,12 +306,8 @@ fig = pygmt.Figure()
 with pygmt.config(FORMAT_DATE_MAP="o"):
     fig.plot(
         projection="X15c/10c",
-<<<<<<< HEAD
-        region=[datetime.datetime(2013, 5, 1), datetime.datetime(2013, 5, 25), 0, 10],
-=======
         region=[datetime.datetime(2013, 5, 1),
                 datetime.datetime(2013, 5, 25), 0, 10],
->>>>>>> get_data_from_stp
         frame=["WS", "sxa1Of1D", "pxa5d", "sy+lLength", "pya1+ucm"],
         x=x,
         y=y,

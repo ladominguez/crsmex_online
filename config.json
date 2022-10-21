@@ -1,9 +1,7 @@
 {
-<<<<<<< HEAD
 "database" : "catalog.db",
 "input_crsmex" : "inputs/time_intervals_xc9500_coh9500.filter.dat",
 "catalog" : "CATALOG_2001_2022.DAT",
-=======
 "before_time" : 10,
 "catalog" : "../inputs/CATALOG_2001_2022.DAT",
 "database" : "catalog.db",
@@ -13,6 +11,5 @@
 "stations" : "dat/stations.pkl",
 "stp_file_name" : "get_data.stp",
 "SSNstp" : "/Users/antonio/bin/SSNstp",
->>>>>>> get_data_from_stp
 "time_zone" : "America/Mexico_City"
 }

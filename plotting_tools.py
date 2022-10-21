@@ -7,41 +7,13 @@ from datetime import datetime
 import pytz
 import pygmt
 
-<<<<<<< HEAD
-def plot_catalog(catalog_file_name,time_lenght=''):
-    tnow=datetime.now(tz=pytz.UTC).strftime("%Y/%m/%dT%H:%M:%S")
-=======
 
 def plot_catalog(catalog_file_name, time_lenght=''):
     tnow = datetime.now(tz=pytz.UTC).strftime("%Y/%m/%dT%H:%M:%S")
->>>>>>> get_data_from_stp
     cmd_sql = r"select  *  from catalog where unixtime >= (select strftime('%s',(select datetime('now','-48 hour'))));"
     con = sqlite3.connect(catalog_file_name)
     df = pandas.read_sql_query(cmd_sql, con)
 
-<<<<<<< HEAD
-    time_x = pandas.to_datetime(df['datetime'],format='%Y/%m/%dT%H:%M:%S')
-    mag_y = df['mag']
-    fig = pygmt.Figure()
-    with pygmt.config(MAP_GRID_PEN_PRIMARY	= '3p,black,--', 
-                      MAP_GRID_PEN_SECONDARY = '3p,black,--',
-                      FONT_ANNOT_SECONDARY		= '12p,Palatino-Roman,black',
-                      FONT_ANNOT_PRIMARY		= '12p,Palatino-Roman,black',
-                      FONT_LABEL         		= '12p,Palatino-Roman,black',
-                      FORMAT_CLOCK_MAP="hh:mm",
-                      FORMAT_DATE_MAP="o dd,yyyy",
-                      FORMAT_TIME_SECONDARY_MAP="abbreviated"):
-        
-        fig.basemap(
-        projection="X12c/5c",
-        region=[ 
-            time_x.min(),
-            time_x.max(),
-            0,
-            6
-        ],
-        frame=["WSen", "sxa1D","pxa6Hf1Hg1H+lTime",'sya1f0.5g0.5+lMagnitude']
-=======
     time_x = pandas.to_datetime(df['datetime'], format='%Y/%m/%dT%H:%M:%S')
     mag_y = df['mag']
     fig = pygmt.Figure()
@@ -64,7 +36,6 @@ def plot_catalog(catalog_file_name, time_lenght=''):
             ],
             frame=["WSen", "sxa1D", "pxa6Hf1Hg1H+lTime",
                    'sya1f0.5g0.5+lMagnitude']
->>>>>>> get_data_from_stp
         )
 
         for k, x_line in enumerate(time_x.to_list()):
@@ -73,24 +44,6 @@ def plot_catalog(catalog_file_name, time_lenght=''):
                 y=[0, mag_y[k]],
                 pen="0.5p",
                 color="red3"
-<<<<<<< HEAD
-        )
-
-        fig.plot(
-        x = time_x.to_list(),
-        y = mag_y,
-        style="a0.4c", 
-        pen="1p", 
-        color="dodgerblue"
-        )
-    fig.show()    
-
-
-
-
-
-
-=======
             )
 
         fig.plot(
@@ -101,4 +54,3 @@ def plot_catalog(catalog_file_name, time_lenght=''):
             color="dodgerblue"
         )
     fig.show()
->>>>>>> get_data_from_stp
