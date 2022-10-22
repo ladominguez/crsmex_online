@@ -1,0 +1,384 @@
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813285552209920
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813685726908417
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993973463515136
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  8  tweet_id:  1581993957143171072
+files_found:  21
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813837128675329
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  5  tweet_id:  1581813522144514048
+files_found:  14
+type:  <class 'list'>  len:  1
+Nsta:  9  tweet_id:  1581814205488852992
+files_found:  20
+type:  <class 'list'>  len:  1
+Nsta:  13  tweet_id:  1581814188883574784
+files_found:  29
+type:  <class 'list'>  len:  1
+Nsta:  4  tweet_id:  1582015080493092864
+files_found:  12
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581814008507559936
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813669188411392
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813450119950337
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814307255308288
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  11  tweet_id:  1581993423577358336
+files_found:  27
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813433414324225
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  10  tweet_id:  1581994291362029568
+files_found:  27
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813702223101952
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  12  tweet_id:  1581993473430802434
+files_found:  30
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813554608369665
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  9  tweet_id:  1581814290851725312
+files_found:  20
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813587332321280
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581993753254191107
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  7  tweet_id:  1581814024932450306
+files_found:  18
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581994444554805250
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993506314551296
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994071999930368
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993720487870464
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  12  tweet_id:  1581994461055266817
+files_found:  30
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813636431241218
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813538355494913
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  12  tweet_id:  1581993539143028738
+files_found:  30
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994191345053702
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994493896626176
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  9  tweet_id:  1581993736820903940
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814323726278656
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  10  tweet_id:  1581993341419687938
+files_found:  21
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581994224488448001
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994055705116674
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  11  tweet_id:  1581814274267062272
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813318553325569
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813755016785921
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813466486034432
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  11  tweet_id:  1581993390786609154
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  11  tweet_id:  1581813853444517888
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994241387290625
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  3  tweet_id:  1581814041328377858
+files_found:  8
+type:  <class 'list'>  len:  1
+Nsta:  5  tweet_id:  1581814073951686656
+files_found:  14
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993357827461121
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581814057627049985
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  7  tweet_id:  1581994543095816192
+files_found:  15
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993989825187841
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  12  tweet_id:  1581993687785287680
+files_found:  30
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813570932969472
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994208025399298
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  9  tweet_id:  1581994022616256512
+files_found:  21
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813351205597185
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813804203401216
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813505811808257
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  11  tweet_id:  1581994477497241601
+files_found:  27
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813771500388352
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581994257682141185
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813400405172224
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814106759131136
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813302199734272
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  9  tweet_id:  1581994526524157953
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814172471373824
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581993704163663873
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814123192496129
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  10  tweet_id:  1582006773032325120
+files_found:  24
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813334839791616
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813619972403200
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813787853627392
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813820561186818
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993440094859270
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581993489880842246
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993555589226496
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813603594047488
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994006254616577
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  12  tweet_id:  1581994695290343426
+files_found:  30
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813652801585152
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993940726599680
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993456565907458
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813384072208384
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993407140212744
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994039410585600
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581813367584755714
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994088345522176
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581814090229743617
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581814257884483585
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994274182529025
+files_found:  0
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581994510241759232
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581813416968491009
+files_found:  3
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581814155882811392
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  6  tweet_id:  1581814139579944962
+files_found:  14
+type:  <class 'list'>  len:  1
+Nsta:  2  tweet_id:  1581993522710056961
+files_found:  6
+All files found. 
+
+type:  <class 'list'>  len:  1
+Nsta:  1  tweet_id:  1581993374185590784
+files_found:  3
+All files found. 
+
