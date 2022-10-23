@@ -1,6 +1,6 @@
 import pandas as pd
 
-stnm      = ['CAIG', 'PNIG', 'PLIG', 'ZIIG', 'MMIG', 'TLIG', 'OXIG', 'MEIG', 'ARIG', 'DAIG', 'CRIG', 'PEIG', 'YOIG', 'TXIG', 'MGIG', 'TLIG', 'MEIG']
+stnm      = ['CAIG', 'PNIG', 'PLIG', 'ZIIG', 'MMIG', 'TLIG', 'OXIG', 'MEIG', 'ARIG', 'DAIG', 'CRIG', 'PEIG', 'YOIG', 'TXIG', 'MGIG']
 stla      = [17.0478,
              16.3923,
              18.3923,
@@ -15,9 +15,7 @@ stla      = [17.0478,
              15.998617,
              16.856545,
              17.2532217,
-             17.233614,
-             17.562652,
-             17.925167
+             17.233614
              ]
 
 
@@ -35,9 +33,7 @@ stlo      = [-100.2673,
               -97.1472,
               -97.54565,
               -97.7676667,
-              -98.633759,
-              -98.5665,
-              -99.619758
+              -98.633759
               ]
 
 data = {'station' : stnm,

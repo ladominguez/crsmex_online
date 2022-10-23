@@ -18,10 +18,7 @@ root_crsmex = os.environ["ROOT_CRSMEX"]
 
 
 # load configuration
-config_file = open(os.path.join(root_crsmex,'config.json'))
-config = json.load(config_file) 
-config_file = open(os.path.join(root_crsmex, 'config.json'))
-config = json.load(config_file)
+config = load_configuration()
 local = pytz.timezone(config['time_zone'])
 
 # Logging configuration

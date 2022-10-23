@@ -1,6 +1,7 @@
 from datetime import datetime
 import pytz
-
+import os
+import json
 
 def render_tweet_info(tweet, t_zone):
     text = tweet.full_text
@@ -30,3 +31,8 @@ def render_tweet_info(tweet, t_zone):
     time_utc = pytz.timezone(t_zone).localize(
         time_local, is_dst=None).astimezone(pytz.utc)
     return (time_utc, latitude, longitude, depth, magnitude)
+
+def load_configuration():
+    root_crsmex = os.environ["ROOT_CRSMEX"]
+    config_file = open(os.path.join(root_crsmex, 'config.json'))
+    return json.load(config_file)

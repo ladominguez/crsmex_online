@@ -10,15 +10,13 @@ import glob
 import json
 from datetime import datetime, timedelta
 from geopy.distance import great_circle
-
+from util import load_configuration
 
 #p= Popen('/Users/antonio/bin/SSNstp',stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0)
 # p.communicate(input.encode('ascii'))
 
 # load configuration
-root_crsmex = os.environ["ROOT_CRSMEX"]
-config_file = open(os.path.join(root_crsmex, 'config.json'))
-config = json.load(config_file)
+config = load_configuration()
 input="in " + config["stp_file_name"] + "\nexit\n"
 
 
