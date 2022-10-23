@@ -1,384 +1,521 @@
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813285552209920
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813685726908417
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993973463515136
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  8  tweet_id:  1581993957143171072
-files_found:  21
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813837128675329
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  5  tweet_id:  1581813522144514048
-files_found:  14
-type:  <class 'list'>  len:  1
-Nsta:  9  tweet_id:  1581814205488852992
-files_found:  20
-type:  <class 'list'>  len:  1
-Nsta:  13  tweet_id:  1581814188883574784
-files_found:  29
-type:  <class 'list'>  len:  1
-Nsta:  4  tweet_id:  1582015080493092864
-files_found:  12
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581814008507559936
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813669188411392
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813450119950337
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814307255308288
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  11  tweet_id:  1581993423577358336
-files_found:  27
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813433414324225
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  10  tweet_id:  1581994291362029568
-files_found:  27
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813702223101952
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  12  tweet_id:  1581993473430802434
-files_found:  30
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813554608369665
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  9  tweet_id:  1581814290851725312
-files_found:  20
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813587332321280
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581993753254191107
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  7  tweet_id:  1581814024932450306
-files_found:  18
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581994444554805250
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993506314551296
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994071999930368
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993720487870464
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  12  tweet_id:  1581994461055266817
-files_found:  30
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813636431241218
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813538355494913
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  12  tweet_id:  1581993539143028738
-files_found:  30
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994191345053702
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994493896626176
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  9  tweet_id:  1581993736820903940
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814323726278656
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  10  tweet_id:  1581993341419687938
-files_found:  21
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581994224488448001
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994055705116674
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  11  tweet_id:  1581814274267062272
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813318553325569
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813755016785921
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813466486034432
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  11  tweet_id:  1581993390786609154
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  11  tweet_id:  1581813853444517888
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994241387290625
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  3  tweet_id:  1581814041328377858
-files_found:  8
-type:  <class 'list'>  len:  1
-Nsta:  5  tweet_id:  1581814073951686656
-files_found:  14
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993357827461121
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581814057627049985
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  7  tweet_id:  1581994543095816192
-files_found:  15
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993989825187841
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  12  tweet_id:  1581993687785287680
-files_found:  30
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813570932969472
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994208025399298
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  9  tweet_id:  1581994022616256512
-files_found:  21
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813351205597185
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813804203401216
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813505811808257
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  11  tweet_id:  1581994477497241601
-files_found:  27
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813771500388352
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581994257682141185
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813400405172224
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814106759131136
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813302199734272
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  9  tweet_id:  1581994526524157953
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814172471373824
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581993704163663873
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814123192496129
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  10  tweet_id:  1582006773032325120
-files_found:  24
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813334839791616
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813619972403200
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813787853627392
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813820561186818
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993440094859270
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581993489880842246
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993555589226496
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813603594047488
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994006254616577
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  12  tweet_id:  1581994695290343426
-files_found:  30
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813652801585152
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993940726599680
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993456565907458
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813384072208384
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993407140212744
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994039410585600
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581813367584755714
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994088345522176
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581814090229743617
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581814257884483585
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994274182529025
-files_found:  0
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581994510241759232
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581813416968491009
-files_found:  3
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581814155882811392
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  6  tweet_id:  1581814139579944962
-files_found:  14
-type:  <class 'list'>  len:  1
-Nsta:  2  tweet_id:  1581993522710056961
-files_found:  6
-All files found. 
-
-type:  <class 'list'>  len:  1
-Nsta:  1  tweet_id:  1581993374185590784
-files_found:  3
-All files found. 
-
+python phase_picker.py -d  -p
+usage: phase_picker.py [-h] [-d DIRECTORY] [-p]
+phase_picker.py: error: argument -d/--directory: expected one argument
+python phase_picker.py -d 1581813285552209920 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813285552209920/*.sac
+  station      P      S
+0    MMIG  14.66  18.00
+1    ZIIG  27.87  55.07
+python phase_picker.py -d 1581813302199734272 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813302199734272/*.sac
+None
+python phase_picker.py -d 1581813318553325569 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813318553325569/*.sac
+  station      P      S
+0    MMIG  14.87  18.92
+python phase_picker.py -d 1581813334839791616 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813334839791616/*.sac
+None
+python phase_picker.py -d 1581813351205597185 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813351205597185/*.sac
+  station      P      S
+0    MMIG  15.09  19.31
+1    ZIIG   8.54  24.83
+python phase_picker.py -d 1581813367584755714 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813367584755714/*.sac
+  station      P       S
+0    MMIG  15.91   20.16
+1    ZIIG  34.13  108.91
+python phase_picker.py -d 1581813384072208384 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813384072208384/*.sac
+None
+python phase_picker.py -d 1581813400405172224 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813400405172224/*.sac
+  station      P      S
+0    MMIG  14.94  19.25
+1    ZIIG   8.13  30.10
+python phase_picker.py -d 1581813416968491009 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813416968491009/*.sac
+  station      P      S
+0    MMIG  20.09  28.47
+python phase_picker.py -d 1581813433414324225 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813433414324225/*.sac
+  station      P      S
+0    MMIG  14.87  18.82
+1    ZIIG  39.39  84.96
+python phase_picker.py -d 1581813450119950337 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813450119950337/*.sac
+None
+python phase_picker.py -d 1581813466486034432 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813466486034432/*.sac
+None
+python phase_picker.py -d 1581813505811808257 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813505811808257/*.sac
+  station      P      S
+0    MMIG  13.83  17.34
+1    ZIIG   4.40  13.94
+python phase_picker.py -d 1581813522144514048 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813522144514048/*.sac
+  station       P      S
+0    OXIG    0.23  37.00
+1    PEIG   14.74  20.69
+2    PNIG  119.30   0.00
+3    TXIG    8.23  51.80
+python phase_picker.py -d 1581813538355494913 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813538355494913/*.sac
+  station      P      S
+0    MMIG   1.32  24.16
+1    ZIIG  13.73  38.72
+python phase_picker.py -d 1581813554608369665 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813554608369665/*.sac
+None
+python phase_picker.py -d 1581813570932969472 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813570932969472/*.sac
+None
+python phase_picker.py -d 1581813587332321280 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813587332321280/*.sac
+  station      P      S
+0    MMIG  14.46  17.60
+1    ZIIG   2.96  10.43
+python phase_picker.py -d 1581813603594047488 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813603594047488/*.sac
+  station      P      S
+0    MMIG  13.72  13.83
+1    ZIIG  19.36  58.35
+python phase_picker.py -d 1581813619972403200 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813619972403200/*.sac
+  station      P      S
+0    MMIG  21.66  30.84
+1    ZIIG   2.66  62.93
+python phase_picker.py -d 1581813636431241218 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813636431241218/*.sac
+  station      P       S
+0    MMIG  15.66   19.57
+1    ZIIG  12.43  101.73
+python phase_picker.py -d 1581813652801585152 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813652801585152/*.sac
+  station      P      S
+0    MMIG  14.23  17.58
+python phase_picker.py -d 1581813669188411392 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813669188411392/*.sac
+  station      P      S
+0    MMIG  13.81  16.98
+python phase_picker.py -d 1581813685726908417 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813685726908417/*.sac
+None
+python phase_picker.py -d 1581813702223101952 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813702223101952/*.sac
+  station      P      S
+0    MMIG  14.48  17.69
+python phase_picker.py -d 1581813755016785921 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813755016785921/*.sac
+  station     P     S
+0    MMIG  0.02  6.06
+python phase_picker.py -d 1581813771500388352 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813771500388352/*.sac
+  station      P      S
+0    MMIG  18.14  25.43
+python phase_picker.py -d 1581813787853627392 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813787853627392/*.sac
+  station      P       S
+0    MMIG  14.01   18.35
+1    ZIIG  23.07  112.18
+python phase_picker.py -d 1581813804203401216 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813804203401216/*.sac
+  station      P      S
+0    MMIG  14.03  99.65
+python phase_picker.py -d 1581813820561186818 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813820561186818/*.sac
+  station      P      S
+0    MMIG  14.53  18.65
+python phase_picker.py -d 1581813837128675329 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813837128675329/*.sac
+  station     P      S
+0    PEIG  1.01  76.22
+python phase_picker.py -d 1581813853444517888 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581813853444517888/*.sac
+  station      P       S
+0    ARIG  78.79  117.55
+1    CAIG  17.07   21.19
+2    CRIG   6.05   59.73
+3    DAIG  10.85   28.92
+4    MEIG   0.02   23.69
+5    PLIG   8.70   54.48
+6    TLIG   2.29   39.67
+7    ZIIG   0.50    0.00
+python phase_picker.py -d 1581814008507559936 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814008507559936/*.sac
+  station      P       S
+0    MMIG  16.08   21.68
+1    ZIIG  35.37  100.09
+python phase_picker.py -d 1581814024932450306 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814024932450306/*.sac
+  station      P       S
+0    ARIG  26.86   40.04
+1    CAIG  14.00   35.54
+2    DAIG  28.83  119.52
+3    MEIG   1.25   52.42
+4    PLIG   3.19   95.17
+5    ZIIG  18.79   27.98
+python phase_picker.py -d 1581814041328377858 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814041328377858/*.sac
+  station      P      S
+0    OXIG  25.51  38.25
+1    PEIG  30.01  31.95
+python phase_picker.py -d 1581814057627049985 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814057627049985/*.sac
+  station      P       S
+0    MMIG  16.08   20.51
+1    ZIIG  25.40  119.52
+python phase_picker.py -d 1581814073951686656 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814073951686656/*.sac
+  station      P       S
+0    OXIG  17.27   43.70
+1    PEIG  13.77   17.13
+2    PNIG  94.78  119.52
+3    TXIG   0.03    0.00
+python phase_picker.py -d 1581814090229743617 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814090229743617/*.sac
+None
+python phase_picker.py -d 1581814106759131136 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814106759131136/*.sac
+  station      P      S
+0    MMIG  14.48  17.68
+python phase_picker.py -d 1581814123192496129 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814123192496129/*.sac
+None
+python phase_picker.py -d 1581814139579944962 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814139579944962/*.sac
+  station      P       S
+0    CRIG   1.14   43.38
+1    PEIG  68.44  113.96
+2    PNIG  21.82   35.71
+3    TXIG  10.25   62.26
+python phase_picker.py -d 1581814155882811392 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814155882811392/*.sac
+  station      P       S
+0    MMIG  14.76   19.08
+1    ZIIG  12.59  113.79
+python phase_picker.py -d 1581814172471373824 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814172471373824/*.sac
+None
+python phase_picker.py -d 1581814188883574784 -p
+sh: line 45: 10632 Segmentation fault: 11  python phase_picker.py -d 1581814188883574784 -p
+python phase_picker.py -d 1581814188883574784 -p
+sh: line 46: 10636 Segmentation fault: 11  python phase_picker.py -d 1581814188883574784 -p
+python phase_picker.py -d 1581814205488852992 -p
+sh: line 47: 10641 Segmentation fault: 11  python phase_picker.py -d 1581814205488852992 -p
+python phase_picker.py -d 1581814257884483585 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814257884483585/*.sac
+  station     P      S
+0    MMIG  2.22  16.83
+1    ZIIG  8.95  64.83
+python phase_picker.py -d 1581814274267062272 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814274267062272/*.sac
+  station      P       S
+0    ARIG   0.78   56.65
+1    CAIG  15.94   20.01
+2    CRIG  17.62  119.52
+3    DAIG  20.18   27.62
+4    MEIG  21.38   87.38
+5    PLIG  39.98   88.95
+6    TLIG  12.85   50.19
+7    ZIIG   4.31   76.25
+python phase_picker.py -d 1581814290851725312 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814290851725312/*.sac
+  station      P       S
+0    CRIG  43.58  109.18
+1    OXIG   0.02    0.00
+2    PEIG   0.86   89.06
+3    PNIG  18.72   26.21
+4    TLIG  13.38  108.31
+5    TXIG   2.47   51.09
+python phase_picker.py -d 1581814307255308288 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814307255308288/*.sac
+  station    P      S
+0    OXIG  0.7  20.82
+python phase_picker.py -d 1581814323726278656 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581814323726278656/*.sac
+  station      P      S
+0    MMIG  15.06  18.85
+python phase_picker.py -d 1581993341419687938 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993341419687938/*.sac
+  station      P      S
+0    ARIG   1.41  63.01
+1    CAIG  19.32  27.24
+2    CRIG  15.49  35.45
+3    DAIG  20.57  28.51
+4    MEIG   7.72  53.37
+5    TLIG  28.52  68.86
+6    ZIIG   1.60  29.95
+python phase_picker.py -d 1581993357827461121 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993357827461121/*.sac
+  station      P      S
+0    MMIG  68.41  70.88
+python phase_picker.py -d 1581993374185590784 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993374185590784/*.sac
+  station      P      S
+0    MMIG  13.41  15.88
+python phase_picker.py -d 1581993390786609154 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993390786609154/*.sac
+  station      P       S
+0    ARIG   5.73   56.59
+1    CAIG  20.15   28.64
+2    CRIG  20.57   28.89
+3    DAIG  13.84   16.90
+4    MEIG  27.53   42.23
+5    PLIG  39.87   55.28
+6    PNIG   0.02  112.83
+7    TLIG   3.45   48.60
+python phase_picker.py -d 1581993407140212744 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993407140212744/*.sac
+None
+python phase_picker.py -d 1581993423577358336 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993423577358336/*.sac
+  station      P       S
+0    ARIG   0.74   52.96
+1    CAIG  20.08   28.43
+2    CRIG  20.93   30.02
+3    DAIG  14.66   18.51
+4    MEIG   1.09   77.70
+5    PLIG   1.66  117.39
+6    PNIG  10.58   43.94
+7    TLIG   0.03   89.55
+python phase_picker.py -d 1581993440094859270 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993440094859270/*.sac
+  station      P      S
+0    MMIG  23.08  22.99
+python phase_picker.py -d 1581993456565907458 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993456565907458/*.sac
+  station      P      S
+0    MMIG  16.96  21.75
+python phase_picker.py -d 1581993473430802434 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993473430802434/*.sac
+  station      P       S
+0    CRIG   6.25   99.96
+1    DAIG   0.75    0.00
+2    MEIG   8.18  119.52
+3    OXIG   0.11    0.00
+4    PLIG   0.10    0.00
+5    PNIG   1.34  119.52
+6    TLIG  18.17   24.72
+7    TXIG  13.37   35.83
+8    YOIG   8.07  119.52
+python phase_picker.py -d 1581993489880842246 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993489880842246/*.sac
+  station      P       S
+0    MMIG  14.47   18.30
+1    ZIIG   0.04  112.76
+python phase_picker.py -d 1581993506314551296 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993506314551296/*.sac
+  station      P      S
+0    MMIG  13.69  16.77
+python phase_picker.py -d 1581993522710056961 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993522710056961/*.sac
+  station      P      S
+0    MMIG  14.35  17.71
+1    ZIIG   1.56  84.07
+python phase_picker.py -d 1581993539143028738 -p
+sh: line 65: 10869 Segmentation fault: 11  python phase_picker.py -d 1581993539143028738 -p
+python phase_picker.py -d 1581993555589226496 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993555589226496/*.sac
+None
+python phase_picker.py -d 1581993687785287680 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993687785287680/*.sac
+  station      P       S
+0    CAIG   0.02   59.88
+1    CRIG  20.41   28.85
+2    DAIG   0.89    0.00
+3    MEIG   7.28  119.52
+4    PEIG   0.02    0.00
+5    PNIG  17.41   24.68
+6    TLIG  27.67   41.49
+7    TXIG  21.44   42.95
+8    YOIG  28.17   41.29
+python phase_picker.py -d 1581993704163663873 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993704163663873/*.sac
+  station      P      S
+0    OXIG   1.28  20.93
+1    PEIG  23.37  55.60
+python phase_picker.py -d 1581993720487870464 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993720487870464/*.sac
+None
+python phase_picker.py -d 1581993736820903940 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993736820903940/*.sac
+  station      P      S
+0    CRIG  35.98  57.48
+1    MGIG  34.17  55.26
+2    OXIG  29.37  46.84
+3    PEIG  17.62  24.76
+4    PNIG  19.22  28.27
+5    TLIG  38.27  61.19
+6    TXIG  27.36  42.44
+7    YOIG  20.60  29.34
+python phase_picker.py -d 1581993753254191107 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993753254191107/*.sac
+  station      P       S
+0    MMIG  13.47   17.02
+1    ZIIG  57.17  111.71
+python phase_picker.py -d 1581993940726599680 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993940726599680/*.sac
+None
+python phase_picker.py -d 1581993957143171072 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993957143171072/*.sac
+  station      P       S
+0    ARIG  21.24   49.04
+1    CAIG  17.66   23.92
+2    CRIG  26.15  106.38
+3    DAIG  41.37   40.02
+4    MEIG   1.94   50.81
+5    PLIG   7.90    5.00
+6    ZIIG  11.50   29.02
+python phase_picker.py -d 1581993973463515136 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993973463515136/*.sac
+None
+python phase_picker.py -d 1581993989825187841 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581993989825187841/*.sac
+  station      P      S
+0    MMIG  21.02  30.59
+python phase_picker.py -d 1581994006254616577 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994006254616577/*.sac
+None
+python phase_picker.py -d 1581994022616256512 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994022616256512/*.sac
+  station      P      S
+0    CAIG  24.04  34.12
+1    CRIG  19.09  26.35
+2    DAIG  19.24  26.29
+3    MEIG  25.66  51.56
+4    PNIG  32.50  48.28
+5    TLIG  34.04  55.20
+python phase_picker.py -d 1581994039410585600 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994039410585600/*.sac
+None
+python phase_picker.py -d 1581994055705116674 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994055705116674/*.sac
+  station      P      S
+0    MMIG  14.18  17.35
+python phase_picker.py -d 1581994071999930368 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994071999930368/*.sac
+  station      P      S
+0    MMIG  13.22  15.82
+python phase_picker.py -d 1581994088345522176 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994088345522176/*.sac
+None
+python phase_picker.py -d 1581994191345053702 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994191345053702/*.sac
+None
+python phase_picker.py -d 1581994208025399298 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994208025399298/*.sac
+  station     P     S
+0    OXIG  2.21  62.0
+python phase_picker.py -d 1581994224488448001 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994224488448001/*.sac
+  station      P       S
+0    MMIG  16.08   20.53
+1    ZIIG  20.28  108.62
+python phase_picker.py -d 1581994241387290625 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994241387290625/*.sac
+  station     P      S
+0    MMIG  16.3  21.35
+python phase_picker.py -d 1581994257682141185 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994257682141185/*.sac
+  station      P      S
+0    MMIG  14.63  18.15
+1    ZIIG  14.34  66.11
+python phase_picker.py -d 1581994274182529025 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994274182529025/*.sac
+None
+python phase_picker.py -d 1581994291362029568 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994291362029568/*.sac
+  station      P      S
+0    CRIG   2.59  39.80
+1    DAIG  83.69  95.81
+2    MGIG  11.12  46.59
+3    OXIG   5.73  47.21
+4    PEIG   6.31  47.75
+5    PNIG  16.28  20.92
+6    TLIG  35.76  55.06
+7    TXIG  30.31  48.45
+8    YOIG  28.11  41.83
+python phase_picker.py -d 1581994444554805250 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994444554805250/*.sac
+  station      P      S
+0    MMIG   6.36  58.73
+1    ZIIG  41.87  53.34
+python phase_picker.py -d 1581994461055266817 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994461055266817/*.sac
+  station       P       S
+0    CAIG    0.02   93.59
+1    CRIG   20.40   29.32
+2    DAIG   10.75   95.82
+3    MEIG   12.94   63.65
+4    PEIG    6.51  117.80
+5    PNIG   17.41   24.67
+6    TLIG   40.70   41.52
+7    TXIG   26.02   42.97
+8    YOIG  119.58    0.00
+python phase_picker.py -d 1581994477497241601 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994477497241601/*.sac
+  station       P       S
+0    ARIG   35.30   54.67
+1    CAIG   14.22   14.39
+2    CRIG   24.47   35.10
+3    DAIG   16.68   21.40
+4    MEIG   29.63   44.31
+5    PLIG    0.03    9.53
+6    TLIG    1.01   12.22
+7    ZIIG  106.85  112.77
+python phase_picker.py -d 1581994493896626176 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994493896626176/*.sac
+None
+python phase_picker.py -d 1581994510241759232 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994510241759232/*.sac
+  station      P      S
+0    MMIG  19.35  26.49
+python phase_picker.py -d 1581994526524157953 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994526524157953/*.sac
+  station      P      S
+0    CRIG  23.13  34.08
+1    DAIG  32.63  50.23
+2    PEIG  31.99  52.35
+3    PNIG  16.55  21.60
+4    TLIG  31.38  48.65
+5    TXIG  30.14  47.71
+6    YOIG  28.72  42.74
+python phase_picker.py -d 1581994543095816192 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994543095816192/*.sac
+  station      P      S
+0    ARIG  37.87  60.33
+1    MEIG  33.28  50.43
+2    PLIG   4.72  18.84
+3    TLIG  29.18  55.65
+python phase_picker.py -d 1581994695290343426 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1581994695290343426/*.sac
+  station      P      S
+0    CAIG   6.51  78.48
+1    CRIG  20.38  29.00
+2    DAIG   0.12   0.00
+3    MEIG  11.98  35.76
+4    PEIG   7.17  63.01
+5    PNIG  17.41  24.82
+6    TLIG  27.46  41.28
+7    TXIG  28.59  42.83
+8    YOIG   5.93  41.95
+python phase_picker.py -d 1582006773032325120 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1582006773032325120/*.sac
+  station      P      S
+0    ARIG  33.26  66.11
+1    CAIG  18.32  27.11
+2    CRIG  24.78  38.21
+3    DAIG  19.71  27.81
+4    MEIG  32.82  52.44
+5    TLIG  37.99  65.90
+6    ZIIG  39.15  64.20
+python phase_picker.py -d 1582015080493092864 -p
+/Users/antonio/Dropbox/BSL/CRSMEX/webpage/tmp/1582015080493092864/*.sac
+  station      P      S
+0    ARIG  32.31  49.54
+1    CAIG   0.52  42.65
+2    DAIG   0.24   0.00
+3    ZIIG  17.00  22.22

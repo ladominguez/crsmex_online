@@ -1,6 +1,6 @@
-from re import I
-from turtle import color
-from urllib.parse import _NetlocResultMixinStr
+#from re import I
+#from turtle import color
+#from urllib.parse import _NetlocResultMixinStr
 from obspy.core import read
 from obspy.signal.trigger import ar_pick
 from matplotlib import pyplot as plt
@@ -8,14 +8,18 @@ from util import load_configuration
 import os
 import glob
 from pandas import DataFrame, read_pickle
+import time
+import argparse
+import matplotlib as mpl
+mpl.use('Agg')
 
-#plt.rcParams["figure.figsize"] = (10, 6)
+plt.rcParams["figure.figsize"] = (10, 6)
 plt.rcParams.update({'font.size': 16})
 config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 stations = read_pickle(os.path.join(root_crsmex, config["stations"]))
 stations.sort_values(by=['station'], inplace=True)
-print(stations)
+#print(stations)
 
 #df = tr1.stats.sampling_rate
 f1 = 2.0       # Frequency of the lower bandpass window
@@ -39,32 +43,30 @@ def phase_picker(directory,plotting=False):
 
     stream.detrend()
     Nsubplots = len(stream)/3
-    print('Nsubplots: ', Nsubplots)
     m = 0
 
-    if plotting:
-        fig, ax = plt.subplots(nrows=int(Nsubplots), ncols=1, squeeze=False)
     P_list = []
     S_list = []
     Sta_list = []
+
+    if plotting:
+        fig, ax = plt.subplots(nrows=int(Nsubplots), ncols=1, squeeze=False)
 
     for sta in stations['station']:
         st_sta = stream.select(station=sta)
         if st_sta:
             try:
-                p_pick, s_pick = ar_pick(st_sta.select(channel='HHZ')[0].data, 
-                                        st_sta.select(channel='HHE')[0].data,
-                                        st_sta.select(channel='HHN')[0].data, 
-                                        st_sta.select(channel='HHZ')[0].stats.sampling_rate, 
-                                        f1, f2, lta_p, sta_p, lta_s, sta_p, 
-                                        m_p, m_s, l_p, l_s, True)
+                tz=st_sta.select(channel='HHZ')[0].data
+                te=st_sta.select(channel='HHE')[0].data
+                tn=st_sta.select(channel='HHN')[0].data
+                ds=st_sta.select(channel='HHZ')[0].stats.sampling_rate
+                p_pick, s_pick = ar_pick(tz, te, tn, ds, f1, f2, lta_p, sta_p, lta_s, sta_p, m_p, m_s, l_p, l_s, True)
             except:
                 continue
             P_list.append(round(p_pick,2))
             S_list.append(round(s_pick,2))
             Sta_list.append(sta)
             if plotting:
-                print('sta: ', sta, ' m:', m)
                 st_sta.select(channel='HHZ')[0].filter("highpass", freq=2.0)
                 ax[m,0].plot(st_sta.select(channel='HHZ')[0].times(), 
                 st_sta.select(channel='HHZ')[0].data,
@@ -78,20 +80,34 @@ def phase_picker(directory,plotting=False):
                 ax[m,0].grid(which='major')
                 ax[m,0].grid(which='minor')
                 m += 1
+            del st_sta
     phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'S' : S_list })
+    phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
+
     if plotting:
         plt.setp(ax, xlim=(phases['P'].min()-5,phases['S'].max()+5))
-        fig.tight_layout()
+        #fig.tight_layout()
         fig.savefig(os.path.join(root_crsmex,'tmp',directory,'picks.png'))
         plt.close()
-
+    del stream
     try:
         return phases
     except TypeError:
         return None
 
 if __name__ == '__main__':
-    for directory in os.listdir(os.path.join(root_crsmex,'tmp')):
-        print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
-        phases=phase_picker(directory,plotting=True)
-        print(phases)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--directory', type=str)
+    parser.add_argument('-p', action='store_true', help='-p for plotting.')
+    args = parser.parse_args()
+    directory = args.directory
+    plotting = args.p
+    
+    #for directory in os.listdir(os.path.join(root_crsmex,'tmp')):    
+        #directory='1581993473430802434'
+        #directory='1581813837128675329'
+        #directory='1582015080493092864'
+    print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
+    phases = phase_picker(directory,plotting=plotting)
+    print(phases)
+
