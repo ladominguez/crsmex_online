@@ -108,7 +108,13 @@ def check_collected_data():
         
 
 
-
+def possible_sequences(r_max=50):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
+    cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
+    df = pd.read_sql_query(cmd_sql, con)
+    cursor = con.cursor()
+    con.close()
+    return id_list
 
 
 
