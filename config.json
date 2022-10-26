@@ -5,7 +5,6 @@
 "before_time" : 10,
 "catalog" : "../inputs/CATALOG_2001_2022.DAT",
 "database" : "catalog.db",
-"input_crsmex" : "../inputs/time_intervals_xc9500_coh9500.filter.dat",
 "max_dist" : 200,
 "record_length" : 120,
 "stations" : "dat/stations.pkl",

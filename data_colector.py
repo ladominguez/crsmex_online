@@ -1,5 +1,5 @@
 from importlib.metadata import entry_points
-from re import I
+from re import I, U
 from subprocess import Popen, PIPE, DEVNULL
 from tkinter import W
 from urllib.parse import _NetlocResultMixinBytes, _NetlocResultMixinStr
@@ -17,6 +17,7 @@ from util import load_configuration
 
 # load configuration
 config = load_configuration()
+root_crsmex = os.environ["ROOT_CRSMEX"]
 input="in " + config["stp_file_name"] + "\nexit\n"
 
 
@@ -110,9 +111,29 @@ def check_collected_data():
 
 def possible_sequences(r_max=50):
     con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
-    cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
-    df = pd.read_sql_query(cmd_sql, con)
-    cursor = con.cursor()
+    cmd_sql1 = '''SELECT datetime, latitude, longitude, depth, tweet_id, 
+                        nearby_sta FROM twitter WHERE data_downloaded == 1;''' 
+    cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters;'''
+    twitter = pd.read_sql_query(cmd_sql1, con)
+    repeaters = pd.read_sql_query(cmd_sql2,con)    
+    #cursor = con.cursor()
+
+    
+    for index1, tweet in twitter.iterrows():
+        id_list = []
+        print(tweet['latitude'], tweet['longitude'])
+        for index2, repeat in repeaters.iterrows():
+            eq_tweet = (tweet['latitude'], tweet['longitude'])
+            eq_repeat = (repeat['latitude' ], repeat['longitude'])
+            distance = great_circle(eq_tweet, eq_repeat).km
+            #print(tweet['tweet_id'],distance)
+            if distance <= r_max:
+                print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
+                id_list.append(repeat['ID'])
+        
+
+
+
     con.close()
     return id_list
 
@@ -121,4 +142,5 @@ def possible_sequences(r_max=50):
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
-    check_collected_data() 
+    #check_collected_data() 
+    repeating_list = possible_sequences() 
