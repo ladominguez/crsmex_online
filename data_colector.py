@@ -109,27 +109,34 @@ def check_collected_data():
         
 
 
-def possible_sequences(r_max=50):
+def possible_sequences(tweet_id, r_max=50):
     con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
-    cmd_sql1 = '''SELECT datetime, latitude, longitude, depth, tweet_id, 
-                        nearby_sta FROM twitter WHERE data_downloaded == 1;''' 
+    cursor = con.cursor()
+
+    cmd_sql1 = '''SELECT latitude, longitude, nearby_sta FROM twitter WHERE data_downloaded == 1 AND tweet_id = '''  + str(tweet_id) + ''';''';
     cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters;'''
     twitter = pd.read_sql_query(cmd_sql1, con)
     repeaters = pd.read_sql_query(cmd_sql2,con)    
     #cursor = con.cursor()
+    cursor.execute(cmd_sql1)
 
+    results = cursor.fetchall()
     
-    for index1, tweet in twitter.iterrows():
-        id_list = []
-        print(tweet['latitude'], tweet['longitude'])
-        for index2, repeat in repeaters.iterrows():
-            eq_tweet = (tweet['latitude'], tweet['longitude'])
-            eq_repeat = (repeat['latitude' ], repeat['longitude'])
-            distance = great_circle(eq_tweet, eq_repeat).km
+    #for index1, tweet in twitter.iterrows():
+    id_list = []
+    print(results)
+    tweet_lat, tweet_lon,  nearby_sta = results[0] 
+    print(tweet_lat, tweet_lon)
+    for index2, repeat in repeaters.iterrows():
+        eq_tweet = (tweet_lat, tweet_lon)
+        eq_repeat = (repeat['latitude' ], repeat['longitude'])
+        distance = great_circle(eq_tweet, eq_repeat).km
             #print(tweet['tweet_id'],distance)
-            if distance <= r_max:
-                print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
-                id_list.append(repeat['ID'])
+        if distance <= r_max:
+            #print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
+            id_list.append(int(repeat['ID']))
+    if id_list:
+        print(id_list)
         
 
 
@@ -143,4 +150,4 @@ if __name__ == '__main__':
     #stp_generator()
     #data_colector()
     #check_collected_data() 
-    repeating_list = possible_sequences() 
+    repeating_list = possible_sequences(1582015080493092864) 

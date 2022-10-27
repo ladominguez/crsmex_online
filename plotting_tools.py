@@ -54,3 +54,12 @@ def plot_catalog(catalog_file_name, time_lenght=''):
             color="dodgerblue"
         )
     fig.show()
+
+
+def plot_sequence_candiates(tweet_id, sequence_list):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+
+    for sequence_candidate in sequence_list():
+
+
