@@ -137,9 +137,6 @@ def possible_sequences(tweet_id, r_max=50):
             #print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
             id_list.append(int(repeat['ID']))
         
-
-
-
     con.close()
     return id_list
 

@@ -6,6 +6,7 @@
 "catalog" : "../inputs/CATALOG_2001_2022.DAT",
 "database" : "catalog.db",
 "max_dist" : 200,
+"radius" : 25, 
 "record_length" : 120,
 "stations" : "dat/stations.pkl",
 "stp_file_name" : "get_data.stp",
