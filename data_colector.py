@@ -11,6 +11,7 @@ import json
 from datetime import datetime, timedelta
 from geopy.distance import great_circle
 from util import load_configuration
+from plotting_tools import plot_sequence_candidates
 
 #p= Popen('/Users/antonio/bin/SSNstp',stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0)
 # p.communicate(input.encode('ascii'))
@@ -135,8 +136,6 @@ def possible_sequences(tweet_id, r_max=50):
         if distance <= r_max:
             #print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
             id_list.append(int(repeat['ID']))
-    if id_list:
-        print(id_list)
         
 
 
@@ -149,5 +148,7 @@ def possible_sequences(tweet_id, r_max=50):
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
-    #check_collected_data() 
-    repeating_list = possible_sequences(1582015080493092864) 
+    #check_collected_data()
+    tweet_id=1582015080493092864
+    repeating_list = possible_sequences(tweet_id)
+    plot_sequence_candidates(tweet_id, repeating_list) 
