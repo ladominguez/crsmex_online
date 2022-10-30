@@ -125,9 +125,7 @@ def possible_sequences(tweet_id, r_max=50):
     
     #for index1, tweet in twitter.iterrows():
     id_list = []
-    print(results)
     tweet_lat, tweet_lon,  nearby_sta = results[0] 
-    print(tweet_lat, tweet_lon)
     for index2, repeat in repeaters.iterrows():
         eq_tweet = (tweet_lat, tweet_lon)
         eq_repeat = (repeat['latitude' ], repeat['longitude'])
@@ -147,5 +145,5 @@ if __name__ == '__main__':
     #data_colector()
     #check_collected_data()
     tweet_id=1582015080493092864
-    repeating_list = possible_sequences(tweet_id)
+    repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
     plot_sequence_candidates(tweet_id, repeating_list) 

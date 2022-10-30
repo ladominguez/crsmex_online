@@ -76,7 +76,7 @@ def plot_catalog(catalog_file_name, time_lenght=''):
             color="dodgerblue"
         )
 
-    fig.show()
+    fig.savefig('./img/catalog.png')
 
 
 def plot_sequence_candidates(tweet_id, sequence_list):
@@ -164,5 +164,6 @@ def plot_sequence_candidates(tweet_id, sequence_list):
         fig.colorbar()
         
     fig.savefig('./img/possible_sequences_' + str(tweet_id) + '.png')
+    plt.close()
 
     #    
