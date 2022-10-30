@@ -8,10 +8,12 @@
 "high" : 8,
 "poles" : 4, 
 "max_dist" : 200,
+"npts_win" : 512,
 "radius" : 25, 
 "record_length" : 120,
 "stations" : "dat/stations.pkl",
 "stp_file_name" : "get_data.stp",
 "SSNstp" : "/Users/antonio/bin/SSNstp",
-"time_zone" : "America/Mexico_City"
+"time_zone" : "America/Mexico_City",
+"window" : 25.5
 }

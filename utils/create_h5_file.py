@@ -69,6 +69,8 @@ with h5py.File(output, 'w') as hdf:
                     w[j].attrs['t5'] = tr.stats.sac.t5
                 except:
                    w[j].attrs['t5'] = tr.stats.sac.a
+                w[j].attrs['datetime'] = tr.stats.starttime.strftime("%Y/%m%/%d,%H:%M:%S")
+                w[j].attrs['magnitude'] = tr.stats.sac.mag
 
 
 

@@ -1,3 +1,4 @@
+from re import I
 import obspy as ob
 import os
 import h5py
@@ -7,6 +8,10 @@ import glob
 import numpy as np
 from matplotlib import pyplot as plt
 from data_colector import possible_sequences
+from matplotlib.pyplot import cm
+from crsmex import get_correlation_coefficient, FFTshift
+from pandas import DataFrame, read_pickle
+
 #from plotting_tools import plot_sequence_candidates
 
 # load configuration
@@ -15,45 +20,92 @@ root_crsmex = os.environ["ROOT_CRSMEX"]
 h5 = h5py.File(config["h5_file"])
 
 
-def find_new_repeaters(tweet_id, possible_sequences):
+def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
     for sequence in possible_sequences:
-        print('S' + '%05d'%(sequence))
         sequence_group = h5.get('S' + '%05d'%(sequence))
         stations_seq = list(sequence_group.attrs.get('stations'))
         sac = ob.read(os.path.join(root_crsmex,'tmp',str(tweet_id),'*Z.sac'))
         stations_tweet = [tr.stats.sac.kstnm.strip() for tr in sac]
         process_stations = list(set(stations_seq).intersection(set(stations_tweet)))
+        phases = read_pickle(os.path.join(root_crsmex,'tmp',str(tweet_id),'phases.pkl'))
+        phases.set_index("station", drop = False, inplace = True)
+        print(phases)
         for sta_tweet in process_stations:
+            tp_master = phases.loc[sta_tweet]["P"]
             waveforms = sequence_group.get(sta_tweet)
-            print(sta_tweet)
-            print(waveforms)
-            print(waveforms.keys())
-            print('sta: ', sta_tweet)
-            for wave_key in waveforms.keys():
+
+            n_members = len(waveforms.keys())
+            fig, ax = plt.subplots(nrows=n_members+1, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+1)),
+                                    sharex=True)
+            color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
+            master_tweet = ob.read(os.path.join(root_crsmex,'tmp',str(tweet_id),'*' + sta_tweet + '*Z.sac'))
+            master_tweet.decimate(5)
+            master = master_tweet[0].data
+            t_master = master_tweet[0].times() + master_tweet[0].stats.sac.b - tp_master
+            print(master_tweet)
+            print('dt master: ', master_tweet[0].stats.sampling_rate)
+            b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = master_tweet[0].stats.sampling_rate)
+            master = signal.filtfilt(b, a, master)
+            index_master,  = np.where((t_master >= -2.0) & ( t_master < (-2 + config["npts_win"]*(1/master_tweet[0].stats.sampling_rate))))
+
+
+            ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
+            ax[0,0].plot(t_master[index_master], master[index_master],  color = 'r', linewidth = 0.8)
+            ax[0,0].axvline(0)
+            ax[0,0].legend()
+            ax[0,0].grid(which='major')
+    
+            for m, wave_key in enumerate(waveforms.keys()):
                 wave = np.array(waveforms.get(wave_key))
                 delta = waveforms.get(wave_key).attrs['delta']
                 npts = waveforms.get(wave_key).attrs['npts']
                 t5 = waveforms.get(wave_key).attrs['t5']
                 beg = waveforms.get(wave_key).attrs['b']
+                datetime = waveforms.get(wave_key).attrs['datetime']
+                mag = waveforms.get(wave_key).attrs['magnitude']
+ 
 
-                print("dt: ", delta)
-                print("npts: ", npts)
-                print("t5: ", t5)
-                print("b: ", beg)
                 b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = 1/delta)
                 wave_filt = signal.filtfilt(b, a, wave)
-                time = np.linspace(start=beg,stop=(npts-1)*delta - beg,
+                time = np.linspace(start=beg,stop=(npts-1)*delta + beg,
                                    num=npts)
-                print('t(min): ', time.min(0))
+                time = time -(t5)
 
-                plt.plot(time, wave_filt, color = 'k', linewidth = 0.5)
-                plt.axvline(t5)
-                #plt.xlim((0, 100))
+                index_out,  = np.where((time >= -2.0) & ( time < (-2 + config["npts_win"]*delta)))
+                
+                #if not m:
+                #    master = wave_filt[index_out]
+                #    tshift = 0
+                #else:
+                test = wave_filt[index_out]
+                cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
+                print('cc: ', cc)
+                print('ts: ', tshift) 
+
+
+                if plotting:
+                    ax[m+1,0].plot(time, wave_filt, color = 'k', linewidth = 0.5, label = datetime +", M" + '%3.1f'%(mag) + " cc: " + '%4.2f' % (cc))
+                    ax[m+1,0].plot(time[index_out], wave_filt[index_out], color = 'red', linewidth = 1)
+                    ax[m+1,0].axvline(0)
+                    ax[m+1,0].grid(which='major')
+                    ax[m+1,0].grid(which='minor')
+                    ax[m+1,0].set_xlim((-3, config['window']))
+                    ax[m+1,0].legend()
+                    #ax[n_members,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color),
+                    #                     linewidth= 0.9)
+                    #ax[n_members,0].grid(which='major')
+                    #ax[n_members,0].grid(which='minor')
+                    #ax[n_members,0].axvline(0)
+                    #ax[n_members,0].set_xlim((- 2, 27))
+            if plotting:
+                fig.suptitle('Sequence ' +  '%05d'%(sequence) + ' - ' + sta_tweet + ' - Testing Tweet: ' + str(tweet_id)) 
                 plt.show()
-                break 
-
-        break
-    plt.close()
+            
+        
+            
+    
+    if plotting:                 
+        plt.close()
     return None
 
 if __name__ == '__main__':
@@ -62,5 +114,5 @@ if __name__ == '__main__':
     #check_collected_data()
     tweet_id=1582015080493092864
     repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-    find_new_repeaters(tweet_id, repeating_list)
+    find_new_repeaters(tweet_id, repeating_list, plotting = True)
 #    plot_sequence_candidates(tweet_id, repeating_list) 
