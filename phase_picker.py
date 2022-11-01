@@ -15,6 +15,7 @@ mpl.use('Agg')
 
 plt.rcParams["figure.figsize"] = (10, 6)
 plt.rcParams.update({'font.size': 16})
+
 config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 stations = read_pickle(os.path.join(root_crsmex, config["stations"]))
@@ -54,6 +55,8 @@ def phase_picker(directory,plotting=False):
 
     for sta in stations['station']:
         st_sta = stream.select(station=sta)
+        st_sta.detrend()
+        st_sta.taper(max_percentage = 0.1)
         if st_sta:
             try:
                 tz=st_sta.select(channel='HHZ')[0].data

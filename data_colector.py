@@ -122,6 +122,8 @@ def possible_sequences(tweet_id, r_max=50):
     cursor.execute(cmd_sql1)
 
     results = cursor.fetchall()
+    if not results:
+        return []
     
     #for index1, tweet in twitter.iterrows():
     id_list = []
@@ -143,7 +145,8 @@ def possible_sequences(tweet_id, r_max=50):
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
-    #check_collected_data()
-    tweet_id=1582015080493092864
-    repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-    plot_sequence_candidates(tweet_id, repeating_list) 
+
+    check_collected_data()
+    #tweet_id=1582015080493092864
+    #repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+    #plot_sequence_candidates(tweet_id, repeating_list) 

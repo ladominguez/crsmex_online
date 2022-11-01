@@ -6,7 +6,7 @@ import matplotlib.dates as md
 from datetime import datetime
 from util import load_configuration
 import pytz
-import pygmt
+#import pygmt
 import os 
 from collections import namedtuple
 from numpy import arange

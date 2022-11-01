@@ -29,32 +29,31 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
         process_stations = list(set(stations_seq).intersection(set(stations_tweet)))
         phases = read_pickle(os.path.join(root_crsmex,'tmp',str(tweet_id),'phases.pkl'))
         phases.set_index("station", drop = False, inplace = True)
-        print(phases)
         for sta_tweet in process_stations:
             tp_master = phases.loc[sta_tweet]["P"]
             waveforms = sequence_group.get(sta_tweet)
 
             n_members = len(waveforms.keys())
-            fig, ax = plt.subplots(nrows=n_members+1, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+1)),
-                                    sharex=True)
-            color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
             master_tweet = ob.read(os.path.join(root_crsmex,'tmp',str(tweet_id),'*' + sta_tweet + '*Z.sac'))
             master_tweet.decimate(5)
             master = master_tweet[0].data
             t_master = master_tweet[0].times() + master_tweet[0].stats.sac.b - tp_master
-            print(master_tweet)
-            print('dt master: ', master_tweet[0].stats.sampling_rate)
             b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = master_tweet[0].stats.sampling_rate)
             master = signal.filtfilt(b, a, master)
             index_master,  = np.where((t_master >= -2.0) & ( t_master < (-2 + config["npts_win"]*(1/master_tweet[0].stats.sampling_rate))))
 
+            if plotting:
+                fig, ax = plt.subplots(nrows=n_members+1, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+1)),
+                                    sharex=True)
+                color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
 
-            ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
-            ax[0,0].plot(t_master[index_master], master[index_master],  color = 'r', linewidth = 0.8)
-            ax[0,0].axvline(0)
-            ax[0,0].legend()
-            ax[0,0].grid(which='major')
-    
+                ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
+                ax[0,0].plot(t_master[index_master], master[index_master],  color = 'r', linewidth = 0.8)
+                ax[0,0].axvline(0)
+                ax[0,0].legend()
+                ax[0,0].grid(which='major')
+                RepeaterFound = False
+                 
             for m, wave_key in enumerate(waveforms.keys()):
                 wave = np.array(waveforms.get(wave_key))
                 delta = waveforms.get(wave_key).attrs['delta']
@@ -79,8 +78,11 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 #else:
                 test = wave_filt[index_out]
                 cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
-                print('cc: ', cc)
-                print('ts: ', tshift) 
+                if cc >= 0.7:
+                    print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet)
+                    print('cc: ', cc)
+                    print('ts: ', tshift) 
+                    RepeaterFound = True
 
 
                 if plotting:
@@ -97,22 +99,36 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                     #ax[n_members,0].grid(which='minor')
                     #ax[n_members,0].axvline(0)
                     #ax[n_members,0].set_xlim((- 2, 27))
-            if plotting:
+            if plotting and RepeaterFound:
                 fig.suptitle('Sequence ' +  '%05d'%(sequence) + ' - ' + sta_tweet + ' - Testing Tweet: ' + str(tweet_id)) 
-                plt.show()
+                plt.savefig(os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
+                print('Saving: ', os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
+            if plotting:
+                plt.close()
             
         
             
     
-    if plotting:                 
-        plt.close()
+#    if plotting:                 
+#        plt.close()
     return None
 
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
     #check_collected_data()
-    tweet_id=1582015080493092864
-    repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-    find_new_repeaters(tweet_id, repeating_list, plotting = True)
+    #tweet_id=1582015080493092864
+    tweet_id = 1581813685726908417
+    directories = glob.glob("./tmp/[0-9]*")
+    directories = glob.glob("./tmp/1581994291362029568")    
+    for directory in directories:
+        tweet_id = directory.split('/')[2]
+        repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+        if repeating_list:
+            print(tweet_id, repeating_list)
+            find_new_repeaters(tweet_id, repeating_list, plotting = True)
+
+#        if not repeating_list:
+
+
 #    plot_sequence_candidates(tweet_id, repeating_list) 
