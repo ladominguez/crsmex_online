@@ -11,7 +11,10 @@ from data_colector import possible_sequences
 from matplotlib.pyplot import cm
 from crsmex import get_correlation_coefficient, FFTshift
 from pandas import DataFrame, read_pickle
+from sklearn import preprocessing
 
+
+plt.rcParams.update({'font.size': 16})
 #from plotting_tools import plot_sequence_candidates
 
 # load configuration
@@ -78,7 +81,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 #else:
                 test = wave_filt[index_out]
                 cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
-                if cc >= 0.7:
+                if cc >= 0.2:
                     print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet)
                     print('cc: ', cc)
                     print('ts: ', tshift) 
