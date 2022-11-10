@@ -7,7 +7,7 @@ from util import load_configuration
 import glob
 import numpy as np
 from matplotlib import pyplot as plt
-from data_colector import possible_sequences
+from data_colector import *
 from matplotlib.pyplot import cm
 from crsmex import get_correlation_coefficient, FFTshift
 from pandas import DataFrame, read_pickle
@@ -15,7 +15,7 @@ from sklearn import preprocessing
 
 
 plt.rcParams.update({'font.size': 16})
-#from plotting_tools import plot_sequence_candidates
+from plotting_tools import plot_sequence_candidates
 
 # load configuration
 config = load_configuration()
@@ -118,8 +118,9 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
 
 if __name__ == '__main__':
     #stp_generator()
-    #data_colector()
-    #check_collected_data()
+    data_colector()
+    check_collected_data()
+    exit()
     #tweet_id=1582015080493092864
     tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")

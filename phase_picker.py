@@ -7,10 +7,15 @@ from matplotlib import pyplot as plt
 from util import load_configuration
 import os
 import glob
+from numpy import sqrt
 from pandas import DataFrame, read_pickle
 import time
 import argparse
 import matplotlib as mpl
+import sqlite3
+from geopy.distance import great_circle
+from obspy.taup import TauPyModel
+
 mpl.use('Agg')
 
 plt.rcParams["figure.figsize"] = (10, 6)
@@ -20,6 +25,9 @@ config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 stations = read_pickle(os.path.join(root_crsmex, config["stations"]))
 stations.sort_values(by=['station'], inplace=True)
+cmd_sql = r''
+model = TauPyModel('/Users/antonio/Dropbox/BSL/CRSMEX/webpage/taup/ssn.npz')
+
 #print(stations)
 
 #df = tr1.stats.sampling_rate
@@ -42,6 +50,16 @@ def phase_picker(directory,plotting=False):
     except:
         return None
 
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    cursor.execute("SELECT latitude, longitude, depth FROM twitter WHERE tweet_id = ?", (directory,))
+
+    db_result = cursor.fetchone()
+    if db_result is not None:
+        latitude_eq, longitude_eq, depth = db_result
+    else:
+        raise Exception('Tweet ' + str(tweet.id) + ' not in the database.')
+
     stream.detrend()
     Nsubplots = len(stream)/3
     m = 0
@@ -49,6 +67,10 @@ def phase_picker(directory,plotting=False):
     P_list = []
     S_list = []
     Sta_list = []
+    dist = []
+    depths = []
+    theoretical = []
+
 
     if plotting:
         fig, ax = plt.subplots(nrows=int(Nsubplots), ncols=1, squeeze=False)
@@ -58,17 +80,27 @@ def phase_picker(directory,plotting=False):
         st_sta.detrend()
         st_sta.taper(max_percentage = 0.1)
         if st_sta:
+            tz = st_sta.select(channel='HHZ')[0].data
+            te = st_sta.select(channel='HHE')[0].data
+            tn = st_sta.select(channel='HHN')[0].data
+            ds = st_sta.select(channel='HHZ')[0].stats.sampling_rate
+            #distance = great_circle((latitude_eq, longitude_eq),(st_sta[0].stats.sac.stla, st_sta[0].stats.sac.stlo)).kilometers/111.19
+            #arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
+
             try:
-                tz=st_sta.select(channel='HHZ')[0].data
-                te=st_sta.select(channel='HHE')[0].data
-                tn=st_sta.select(channel='HHN')[0].data
-                ds=st_sta.select(channel='HHZ')[0].stats.sampling_rate
                 p_pick, s_pick = ar_pick(tz, te, tn, ds, f1, f2, lta_p, sta_p, lta_s, sta_p, m_p, m_s, l_p, l_s, True)
-            except:
+            except ValueError:
                 continue
+
             P_list.append(round(p_pick,2))
             S_list.append(round(s_pick,2))
             Sta_list.append(sta)
+            #dist.append(round(sqrt(distance.kilometers**2 + depth**2),2))
+            #dist.append(round(distance,3))
+            dist.append(77)
+            depths.append(depth)
+            #theoretical.append(arrivals[0].time)
+            theoretical.append(0)
             if plotting:
                 st_sta.select(channel='HHZ')[0].filter("highpass", freq=2.0)
                 ax[m,0].plot(st_sta.select(channel='HHZ')[0].times(), 
@@ -84,7 +116,8 @@ def phase_picker(directory,plotting=False):
                 ax[m,0].grid(which='minor')
                 m += 1
             del st_sta
-    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'S' : S_list })
+    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'teo_time' : theoretical, 'S' : S_list, 'depth' : depths,'dist' : dist})
+    print(phases)
     phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
 
     if plotting:
@@ -99,17 +132,20 @@ def phase_picker(directory,plotting=False):
         return None
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--directory', type=str)
-    parser.add_argument('-p', action='store_true', help='-p for plotting.')
-    args = parser.parse_args()
-    directory = args.directory
-    plotting = args.p
+
+    #parser = argparse.ArgumentParser()
+    #parser.add_argument('-d', '--directory', type=str)
+    #parser.add_argument('-p', action='store_true', help='-p for plotting.')
+    #args = parser.parse_args()
+    #directory = args.directory
+    #plotting = args.p
     
     #for directory in os.listdir(os.path.join(root_crsmex,'tmp')):    
         #directory='1581993473430802434'
         #directory='1581813837128675329'
         #directory='1582015080493092864'
+    directory = '1587083891046752257'
+    plotting = True
     print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
     phases = phase_picker(directory,plotting=plotting)
     print(phases)

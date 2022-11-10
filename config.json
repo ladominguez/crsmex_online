@@ -15,5 +15,6 @@
 "stp_file_name" : "get_data.stp",
 "SSNstp" : "/Users/antonio/bin/SSNstp",
 "time_zone" : "America/Mexico_City",
+"vel_model" : "/Users/antonio/Dropbox/BSL/CRSMEX/webpage/taup/ssn.npz",
 "window" : 25.5
 }
