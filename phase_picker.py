@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from util import load_configuration
 import os
 import glob
-from numpy import sqrt
+from numpy import sqrt, max, abs
 from pandas import DataFrame, read_pickle
 import time
 import argparse
@@ -25,8 +25,8 @@ config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 stations = read_pickle(os.path.join(root_crsmex, config["stations"]))
 stations.sort_values(by=['station'], inplace=True)
-cmd_sql = r''
-model = TauPyModel('/Users/antonio/Dropbox/BSL/CRSMEX/webpage/taup/ssn.npz')
+model = TauPyModel(os.path.join(root_crsmex, config["vel_model"]))
+t0 = config['before_time']
 
 #print(stations)
 
@@ -41,7 +41,12 @@ m_p = 2      # Number of AR coefficients for the P arrival.
 m_s = 8      # Number of AR coefficients for the S arrival.
 l_p = 0.1    # Length of variance window for the P arrival in seconds.
 l_s = 0.2   # Length of variance window for the S arrival in seconds.
-#s_pick = True  # If True, also pick the S phase, otherwise only the P phase.
+s_pick = False  # If True, also pick the S phase, otherwise only the P phase.
+slice_before = -5
+slice_after  = 40
+
+def normalize(array):
+    return array/max(abs(array))
 
 
 def phase_picker(directory,plotting=False):
@@ -72,57 +77,72 @@ def phase_picker(directory,plotting=False):
     theoretical = []
 
 
-    if plotting:
-        fig, ax = plt.subplots(nrows=int(Nsubplots), ncols=1, squeeze=False)
 
     for sta in stations['station']:
         st_sta = stream.select(station=sta)
         st_sta.detrend()
-        st_sta.taper(max_percentage = 0.1)
+        st_sta.taper(max_percentage = 0.04)
         if st_sta:
-            tz = st_sta.select(channel='HHZ')[0].data
-            te = st_sta.select(channel='HHE')[0].data
-            tn = st_sta.select(channel='HHN')[0].data
             ds = st_sta.select(channel='HHZ')[0].stats.sampling_rate
-            #distance = great_circle((latitude_eq, longitude_eq),(st_sta[0].stats.sac.stla, st_sta[0].stats.sac.stlo)).kilometers/111.19
-            #arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
+            tstart = st_sta.select(channel='HHZ')[0].stats.starttime
+
+            distance = great_circle((latitude_eq, longitude_eq),(st_sta[0].stats.sac.stla, st_sta[0].stats.sac.stlo)).kilometers/111.19
+            arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
+            tp_teo = round(arrivals[0].time,2) + t0
+
+            slice_data = st_sta.slice(tstart+tp_teo+slice_before, tstart+tp_teo+slice_after)
+
+            tz = slice_data.select(channel='HHZ')[0].data
+            te = slice_data.select(channel='HHE')[0].data
+            tn = slice_data.select(channel='HHN')[0].data
 
             try:
                 p_pick, s_pick = ar_pick(tz, te, tn, ds, f1, f2, lta_p, sta_p, lta_s, sta_p, m_p, m_s, l_p, l_s, True)
             except ValueError:
                 continue
 
-            P_list.append(round(p_pick,2))
-            S_list.append(round(s_pick,2))
+            p_pick = p_pick + tp_teo + slice_before
+            s_pick = s_pick + tp_teo + slice_before
+
             Sta_list.append(sta)
-            #dist.append(round(sqrt(distance.kilometers**2 + depth**2),2))
-            #dist.append(round(distance,3))
-            dist.append(77)
+            P_list.append(round(p_pick,2))
+            theoretical.append(tp_teo)
+            S_list.append(round(s_pick,2))
+            dist.append(round(distance,3))
             depths.append(depth)
-            #theoretical.append(arrivals[0].time)
-            theoretical.append(0)
-            if plotting:
-                st_sta.select(channel='HHZ')[0].filter("highpass", freq=2.0)
-                ax[m,0].plot(st_sta.select(channel='HHZ')[0].times(), 
-                st_sta.select(channel='HHZ')[0].data,
-                linewidth=0.2,color='k',
-                label=sta)
-                ax[m,0].axvline(p_pick,color='red',ls='--')
-                ax[m,0].axvline(s_pick,color='blue',ls='--')
-                ax[m,0].autoscale(enable=True, axis='x', tight=True)
-                ax[m,0].set_xlabel('time (s)')
-                ax[m,0].set_title('Station: ' + sta,fontsize=16)
-                ax[m,0].grid(which='major')
-                ax[m,0].grid(which='minor')
-                m += 1
             del st_sta
-    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'teo_time' : theoretical, 'S' : S_list, 'depth' : depths,'dist' : dist})
-    print(phases)
+
+    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'P_theo' : theoretical, 'S' : S_list, 'depth' : depths,'dist' : dist})
     phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
 
     if plotting:
+        fig, ax = plt.subplots(nrows=int(Nsubplots), ncols=1, squeeze=False, sharex = True)
+        fig.subplots_adjust(hspace=0)
         plt.setp(ax, xlim=(phases['P'].min()-5,phases['S'].max()+5))
+
+        for m, row in enumerate(phases.sort_values(by=['dist']).itertuples()):
+            stream.select(channel='HHZ', station = row.station).filter("highpass", freq=2.0)
+            ax[m,0].plot(stream.select(channel='HHZ', station = row.station )[0].times(), 
+            normalize(stream.select(channel='HHZ', station = row.station)[0].data),
+                      linewidth=0.1,color='k',
+                      label=sta)
+            ax[m,0].axvline(row.P,color='red',ls='--')
+            ax[m,0].axvline(row.P_theo,color='green',ls='-', label = 'P_{theo}')
+            ax[m,0].axvline(row.S,color='blue',ls='--')
+            ax[m,0].autoscale(enable=True, axis='x', tight=True)
+            ax[m,0].set_xlabel('time (s)')
+            #ax[m,0].set_title('Station: ' + row.station,fontsize=16)
+            ax[m,0].text(1.1*(phases['S'].max()+5), 0.2, row.station, fontsize= 14) 
+            ax[m,0].text(phases['P'].min()-12 , 0.4, '%4.1f'%(row.dist*111.1) + 'km', fontsize= 8) 
+            ax[m,0].grid(which='major')
+            ax[m,0].grid(which='minor')
+            ax[m,0].get_yaxis().set_visible(False)
+            m += 1
+
+
+                #ax[m,0].text(0.9*st_sta.select(channel='HHZ')[0].times().max(), 0.2, sta, fontsize= 14)
         #fig.tight_layout()
+        fig.suptitle('Tweet id: ' + directory)
         fig.savefig(os.path.join(root_crsmex,'tmp',directory,'picks.png'))
         plt.close()
     del stream
@@ -133,20 +153,20 @@ def phase_picker(directory,plotting=False):
 
 if __name__ == '__main__':
 
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument('-d', '--directory', type=str)
-    #parser.add_argument('-p', action='store_true', help='-p for plotting.')
-    #args = parser.parse_args()
-    #directory = args.directory
-    #plotting = args.p
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--directory', type=str)
+    parser.add_argument('-p', action='store_true', help='-p for plotting.')
+    args = parser.parse_args()
+    directory = args.directory
+    plotting = args.p
     
     #for directory in os.listdir(os.path.join(root_crsmex,'tmp')):    
         #directory='1581993473430802434'
         #directory='1581813837128675329'
         #directory='1582015080493092864'
-    directory = '1587083891046752257'
-    plotting = True
-    print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
+    #directory = '1587083891046752257'
+    #plotting = True
+    #print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
     phases = phase_picker(directory,plotting=plotting)
-    print(phases)
+    #print(phases.sort_values(by=['dist']))
 
