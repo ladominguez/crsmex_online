@@ -1,0 +1,7 @@
+systemctl commands
+
+systemctl --user start crsmex
+systemctl --user status crsmex
+
+systemctl --user status crsmex
+journalctl --user -u crsmex -n 150
