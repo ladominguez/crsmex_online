@@ -118,9 +118,9 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
 
 if __name__ == '__main__':
     #stp_generator()
-    data_colector()
-    check_collected_data()
-    exit()
+    #data_colector()
+    #check_collected_data()
+    #exit()
     #tweet_id=1582015080493092864
     tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
@@ -128,6 +128,7 @@ if __name__ == '__main__':
     for directory in directories:
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+        print('list: ', repeating_list)
         if repeating_list:
             print(tweet_id, repeating_list)
             find_new_repeaters(tweet_id, repeating_list, plotting = True)

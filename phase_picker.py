@@ -42,8 +42,8 @@ m_s = 8      # Number of AR coefficients for the S arrival.
 l_p = 0.1    # Length of variance window for the P arrival in seconds.
 l_s = 0.2   # Length of variance window for the S arrival in seconds.
 s_pick = False  # If True, also pick the S phase, otherwise only the P phase.
-slice_before = -5
-slice_after  = 40
+slice_before = -2
+slice_after  = 15
 
 def normalize(array):
     return array/max(abs(array))
@@ -75,6 +75,8 @@ def phase_picker(directory,plotting=False):
     dist = []
     depths = []
     theoretical = []
+    tslice_start_list = []
+    tslice_stop_list = []
 
 
 
@@ -90,7 +92,9 @@ def phase_picker(directory,plotting=False):
             arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
             tp_teo = round(arrivals[0].time,2) + t0
 
-            slice_data = st_sta.slice(tstart+tp_teo+slice_before, tstart+tp_teo+slice_after)
+            tslice_start = tstart + tp_teo+slice_before 
+            tslice_stop = tstart + tp_teo+slice_after
+            slice_data = st_sta.slice(tslice_start, tslice_stop)
 
             tz = slice_data.select(channel='HHZ')[0].data
             te = slice_data.select(channel='HHE')[0].data
@@ -110,9 +114,15 @@ def phase_picker(directory,plotting=False):
             S_list.append(round(s_pick,2))
             dist.append(round(distance,3))
             depths.append(depth)
+            tslice_start_list.append(round(tp_teo+slice_before,2))
+            tslice_stop_list.append(round(tp_teo+slice_after,2))
             del st_sta
 
-    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 'P_theo' : theoretical, 'S' : S_list, 'depth' : depths,'dist' : dist})
+    phases = DataFrame({'station' : Sta_list, 'P' : P_list, 
+                        'P_theo' : theoretical, 'S' : S_list, 
+                        'depth' : depths,'dist' : dist,
+                        'tslice_start' : tslice_start_list,
+                        'tslice_stop' : tslice_stop_list})
     phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
 
     if plotting:
@@ -126,6 +136,8 @@ def phase_picker(directory,plotting=False):
             normalize(stream.select(channel='HHZ', station = row.station)[0].data),
                       linewidth=0.1,color='k',
                       label=sta)
+            ax[m,0].axvline(row.tslice_start,color='black',ls='--')
+            ax[m,0].axvline(row.tslice_stop,color='black',ls='-')
             ax[m,0].axvline(row.P,color='red',ls='--')
             ax[m,0].axvline(row.P_theo,color='green',ls='-', label = 'P_{theo}')
             ax[m,0].axvline(row.S,color='blue',ls='--')
