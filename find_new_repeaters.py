@@ -24,6 +24,7 @@ h5 = h5py.File(config["h5_file"])
 
 
 def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
+    RepeaterFound = False
     for sequence in possible_sequences:
         sequence_group = h5.get('S' + '%05d'%(sequence))
         stations_seq = list(sequence_group.attrs.get('stations'))
@@ -46,16 +47,18 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
             index_master,  = np.where((t_master >= -2.0) & ( t_master < (-2 + config["npts_win"]*(1/master_tweet[0].stats.sampling_rate))))
 
             if plotting:
-                fig, ax = plt.subplots(nrows=n_members+1, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+1)),
+                fig, ax = plt.subplots(nrows=n_members+2, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+2)),
                                     sharex=True)
                 color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
 
                 ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
-                ax[0,0].plot(t_master[index_master], master[index_master],  color = 'r', linewidth = 0.8)
                 ax[0,0].axvline(0)
                 ax[0,0].legend()
                 ax[0,0].grid(which='major')
-                RepeaterFound = False
+                ax[n_members+1,0].plot(t_master[index_master], master[index_master]/np.max(np.abs(master[index_master])),  color = 'r', linewidth = 0.5)
+                ax[n_members+1,0].axvline(0)
+                ax[n_members+1,0].legend()
+                ax[n_members+1,0].grid(which='major')
                  
             for m, wave_key in enumerate(waveforms.keys()):
                 wave = np.array(waveforms.get(wave_key))
@@ -90,16 +93,18 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
 
                 if plotting:
                     ax[m+1,0].plot(time, wave_filt, color = 'k', linewidth = 0.5, label = datetime +", M" + '%3.1f'%(mag) + " cc: " + '%4.2f' % (cc))
-                    ax[m+1,0].plot(time[index_out], wave_filt[index_out], color = 'red', linewidth = 1)
+                    #ax[m+1,0].plot(time[index_out], wave_filt[index_out], color = 'red', linewidth = 1)
                     ax[m+1,0].axvline(0)
                     ax[m+1,0].grid(which='major')
                     ax[m+1,0].grid(which='minor')
                     ax[m+1,0].set_xlim((-3, config['window']))
                     ax[m+1,0].legend()
-                    #ax[n_members,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color),
-                    #                     linewidth= 0.9)
-                    #ax[n_members,0].grid(which='major')
-                    #ax[n_members,0].grid(which='minor')
+                    tshift=0
+                    ax[n_members+1,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color),
+                                         linewidth= 0.5)
+                    ax[n_members+1,0].grid(which='major')
+                    ax[n_members+1,0].grid(which='minor')
+                    ax[n_members+1,0].set_xlim((-3, config['window']))
                     #ax[n_members,0].axvline(0)
                     #ax[n_members,0].set_xlim((- 2, 27))
             if plotting and RepeaterFound:
@@ -108,6 +113,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 print('Saving: ', os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
             if plotting:
                 plt.close()
+    return RepeaterFound
             
         
             
@@ -123,8 +129,9 @@ if __name__ == '__main__':
     #exit()
     #tweet_id=1582015080493092864
     tweet_id = 1581813685726908417
-    directories = glob.glob("./tmp/[0-9]*")
-    directories = glob.glob("./tmp/1581994291362029568")    
+    #directories = glob.glob("./tmp/[0-9]*")
+    directories = glob.glob("./tmp/1587083561303429120")    
+    print(directories)
     for directory in directories:
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
