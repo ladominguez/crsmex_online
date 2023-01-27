@@ -85,9 +85,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 test = wave_filt[index_out]
                 cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
                 if cc >= 0.2:
-                    print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet)
-                    print('cc: ', cc)
-                    print('ts: ', tshift) 
+                    print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet, 'cc: ', cc, 'ts: ', tshift) 
                     RepeaterFound = True
 
 
@@ -129,16 +127,15 @@ if __name__ == '__main__':
     #exit()
     #tweet_id=1582015080493092864
     tweet_id = 1581813685726908417
-    #directories = glob.glob("./tmp/[0-9]*")
-    directories = glob.glob("./tmp/1587083561303429120")    
-    print(directories)
+    directories = glob.glob("./tmp/[0-9]*")
+    #directories = glob.glob("./tmp/1587083561303429120")    
     for directory in directories:
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-        print('list: ', repeating_list)
         if repeating_list:
+            print('list: ', repeating_list)
             print(tweet_id, repeating_list)
-            find_new_repeaters(tweet_id, repeating_list, plotting = True)
+            find_new_repeaters(tweet_id, repeating_list, plotting = False)
 
 #        if not repeating_list:
 

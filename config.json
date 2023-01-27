@@ -1,6 +1,7 @@
 {
 "before_time" : 10,
 "catalog" : "../inputs/CATALOG_2001_2022.DAT",
+"cc_lim" : 0.2,
 "database" : "catalog.db",
 "h5_file" : "crsmex.h5",
 "input_crsmex" : "inputs/time_intervals_xc9500_coh9500.filter.dat",
