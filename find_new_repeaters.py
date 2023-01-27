@@ -25,6 +25,8 @@ h5 = h5py.File(config["h5_file"])
 
 def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
     RepeaterFound = False
+    matching_sequence = []
+    cc_thresholds = []
     for sequence in possible_sequences:
         sequence_group = h5.get('S' + '%05d'%(sequence))
         stations_seq = list(sequence_group.attrs.get('stations'))
@@ -87,6 +89,9 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 if cc >= 0.2:
                     print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet, 'cc: ', cc, 'ts: ', tshift) 
                     RepeaterFound = True
+                    matching_sequence.append(sequence)
+                    cc_thresholds.append(sequence)
+
 
 
                 if plotting:
@@ -111,9 +116,14 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                 print('Saving: ', os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
             if plotting:
                 plt.close()
-    return RepeaterFound
+    return RepeaterFound, matching_sequence, cc_thresholds
             
+def modify_repeater_database(tweet_id, matching_sequence):
+    Success = False
+    if len(matching_sequence) > 1:
         
+    return Success
+
             
     
 #    if plotting:                 
