@@ -12,7 +12,7 @@ from matplotlib.pyplot import cm
 from crsmex import get_correlation_coefficient, FFTshift
 from pandas import DataFrame, read_pickle
 from sklearn import preprocessing
-
+import logging
 
 plt.rcParams.update({'font.size': 16})
 from plotting_tools import plot_sequence_candidates
@@ -21,6 +21,23 @@ from plotting_tools import plot_sequence_candidates
 config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 h5 = h5py.File(config["h5_file"])
+
+# Logging configuration
+FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
+log = logging.getLogger(name='CRSMEX')
+log.setLevel(logging.INFO)
+logging.basicConfig(format=FORMAT)
+
+fh = logging.FileHandler(os.path.join(root_crsmex, 'logger.txt'))
+fh.setFormatter(logging.Formatter(FORMAT))
+fh.setLevel(logging.WARNING)
+log.addHandler(fh)
+
+
+if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcloud server
+    from systemd.journal import JournalHandler
+    log.addHandler(JournalHandler())
+    log.setLevel(logging.WARNING)
 
 
 def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
@@ -109,7 +126,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
                     ax[n_members+1,0].grid(which='minor')
                     ax[n_members+1,0].set_xlim((-3, config['window']))
                     #ax[n_members,0].axvline(0)
-                    #ax[n_members,0].set_xlim((- 2, 27))
+                    #ax[n_members,0].set_xlim((E 2, 27))
             if plotting and RepeaterFound:
                 fig.suptitle('Sequence ' +  '%05d'%(sequence) + ' - ' + sta_tweet + ' - Testing Tweet: ' + str(tweet_id)) 
                 plt.savefig(os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
@@ -120,7 +137,21 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
             
 def modify_repeater_database(tweet_id, matching_sequence):
     Success = False
-    if len(matching_sequence) > 1:
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters,
+                        intervals = intervals || ?,
+                        dates = dates || ?,
+                        ids = ids  || ? WHERE ID = ?;'''
+
+    if len(matching_sequence) == 0:
+        return Success
+    elif len(matching_sequence) > 1:
+        log.warning('More than one sequence matches twitter id ' + tweet_id)
+    else:
+
+    
+
         
     return Success
 
