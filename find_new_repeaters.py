@@ -137,20 +137,28 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
             
 def modify_repeater_database(tweet_id, matching_sequence):
     Success = False
-    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
-    cursor = con.cursor()
-    update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters,
-                        intervals = intervals || ?,
-                        dates = dates || ?,
-                        ids = ids  || ? WHERE ID = ?;'''
 
     if len(matching_sequence) == 0:
         return Success
     elif len(matching_sequence) > 1:
         log.warning('More than one sequence matches twitter id ' + tweet_id)
+    
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    get_previous_record_sql = '''SELECT * FROM repeaters WHERE ID = ?'''
+    update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters + 1,
+                        intervals = intervals || ?,
+                        dates = dates || ?,
+                        ids = ids  || ? WHERE ID = ?'''
+
+    results = cursor.fetch(get_previous_record_sql)
+
     else:
 
     
+    cursor.execute(update_sql,())
+    con.commit()
+    con.close()
 
         
     return Success
