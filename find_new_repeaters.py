@@ -2,6 +2,7 @@ from re import I
 import obspy as ob
 import os
 import h5py
+import sqlite3
 from scipy import signal
 from util import load_configuration
 import glob
@@ -134,7 +135,12 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
             if plotting:
                 plt.close()
     return RepeaterFound, matching_sequence, cc_thresholds
-            
+
+def _get_twitter_info(tweet_id):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    get_twitter_info = '''SELECT datetime ''' 
+
 def modify_repeater_database(tweet_id, matching_sequence):
     Success = False
 
@@ -142,19 +148,16 @@ def modify_repeater_database(tweet_id, matching_sequence):
         return Success
     elif len(matching_sequence) > 1:
         log.warning('More than one sequence matches twitter id ' + tweet_id)
-    
-    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
-    cursor = con.cursor()
-    get_previous_record_sql = '''SELECT * FROM repeaters WHERE ID = ?'''
-    update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters + 1,
+    else:
+        con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+        cursor = con.cursor()
+        get_previous_record_sql = '''SELECT * FROM repeaters WHERE ID = ?'''
+        update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters + 1,
                         intervals = intervals || ?,
                         dates = dates || ?,
                         ids = ids  || ? WHERE ID = ?'''
 
-    results = cursor.fetch(get_previous_record_sql)
-
-    else:
-
+        results = cursor.fetch(get_previous_record_sql)
     
     cursor.execute(update_sql,())
     con.commit()
