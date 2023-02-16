@@ -151,17 +151,27 @@ def modify_repeater_database(tweet_id, matching_sequence):
     else:
         con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
         cursor = con.cursor()
-        get_previous_record_sql = '''SELECT * FROM repeaters WHERE ID = ?'''
+        get_previous_record_sql = '''SELECT dates FROM repeaters WHERE ID = ?'''
+        get_twitter_info = '''SELECT datetime FROM twitter WHERE  tweet_id = ?'''
         update_sql = '''UPDATE repeaters SET no_repeaters = no_repeaters + 1,
                         intervals = intervals || ?,
                         dates = dates || ?,
                         ids = ids  || ? WHERE ID = ?'''
+        cursor.execute(get_twitter_info,(tweet_id,))
+        tweet_info = cursor.fetchone()
+        cursor.execute(get_previous_record_sql,(ID,))
+        db_results = cursor.fetchone()
+        dates = db_results
+        time_last = datetime.strptime(dates.split(' ')[-1], '%Y/%m/%d,%H:%M:%S.%f')
+        tweet_eq_time = datetime.strptime(tweet_info[0],'%Y/%m/%dT%H:%M:%S')
+        dt = tweet_eq_time - time_last
+        interval_new = '%.2f' % dt.total_seconds()
 
-        results = cursor.fetch(get_previous_record_sql)
-    
-    cursor.execute(update_sql,())
-    con.commit()
-    con.close()
+        cursor.execute(update_sql, (' ' + interval_new, ' ' + tweet_info[0].replace('T', ','), 
+               ' ' + str(tweet_id), ID))
+        con.commit()
+        con.close()
+        Success = True
 
         
     return Success
