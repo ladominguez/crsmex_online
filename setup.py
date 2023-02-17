@@ -8,6 +8,6 @@ setuptools.setup(
     url='https://github.com/ladominguez/',
     description='Looks for repeaters real time.'
     packages=setuptools.find_packages(),
-    install_requires=['pandas', 'squilte3', 'tweepy', 'h5py', 'tqdm', 'json']
+    install_requires=['pandas', 'squilte3', 'tweepy', 'h5py', 'tqdm']
 
 )
