@@ -6,8 +6,8 @@ setuptools.setup(
     author='Luis A. Dominguez',
     author_email='ladominguez@ucla.edu',
     url='https://github.com/ladominguez/',
-    description='Looks for repeaters real time.'
+    description='Looks for repeaters real time.',
     packages=setuptools.find_packages(),
-    install_requires=['pandas', 'squilte3', 'tweepy', 'h5py', 'tqdm', 'numpy', 'pygmt']
+    install_requires=['pandas', 'requests','requests-oauthlib','tweepy', 'h5py', 'tqdm', 'numpy', 'pygmt']
 
 )

@@ -146,9 +146,7 @@ def modify_repeater_database(tweet_id, matching_sequence):
 
     if len(matching_sequence) == 0:
         return Success
-    elif len(matching_sequence) > 1:
-        log.warning('More than one sequence matches twitter id ' + tweet_id)
-    else:
+    elif len(matching_sequence) == 1:
         con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
         cursor = con.cursor()
         get_previous_record_sql = '''SELECT dates FROM repeaters WHERE ID = ?'''
@@ -159,7 +157,7 @@ def modify_repeater_database(tweet_id, matching_sequence):
                         ids = ids  || ? WHERE ID = ?'''
         cursor.execute(get_twitter_info,(tweet_id,))
         tweet_info = cursor.fetchone()
-        cursor.execute(get_previous_record_sql,(ID,))
+        cursor.execute(get_previous_record_sql,(matching_sequence,))
         db_results = cursor.fetchone()
         dates = db_results
         time_last = datetime.strptime(dates.split(' ')[-1], '%Y/%m/%d,%H:%M:%S.%f')
@@ -168,10 +166,13 @@ def modify_repeater_database(tweet_id, matching_sequence):
         interval_new = '%.2f' % dt.total_seconds()
 
         cursor.execute(update_sql, (' ' + interval_new, ' ' + tweet_info[0].replace('T', ','), 
-               ' ' + str(tweet_id), ID))
+               ' ' + str(tweet_id), matching_sequence))
         con.commit()
         con.close()
+        log.info('Sucessfully added tweet ' + str(tweet_id) + ' to repeating sequence ' matching_sequence + '.')
         Success = True
+    else:
+        log.warning('More than one sequence matches twitter id ' + tweet_id + ' earthquake was not added to any sequence.')
 
         
     return Success

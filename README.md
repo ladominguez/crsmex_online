@@ -1,9 +1,21 @@
 # Automatic repeating earthquake detector.
 
 This code automatically detects repeating earthquakes reported by the Mexican Seismological Service ([SSN]
-(https://www.ssn.unam.mx/)). When a new earthqauake is reported through the SSN Twitter Feed, the code looks for nearby
+(https://www.ssn.unam.mx/)). When a new earthquake is reported through the SSN Twitter Feed, the code looks for nearby
 sequences previously reported. In this case, we are using a 22-year catalog from 2001-2022.
 
 
 # Instalation.
-1. Clone the repository
+1. To be able to read the Twitter fee from SSN, you must have a developer [Twitter acccount](https://datascienceparichay.com/article/get-data-from-twitter-api-in-python-step-by-step-guide/).
+2. Once you obtain your credentials (`API_KEY_TWITTER`,`API_KEY_SECRET_TWITTER`), you must save them as enviromental
+   variables. For security, <b>NEVER</b> include this values within your code as they may get posted easily. Add you
+   credentals to your `.bashrc`.
+```
+export API_KEY_TWITTER="(Fill)"
+export API_KEY_SECRET_TWITTER="(Fill)"
+export ROOT_CRSMEX="(Fill)"
+```
+3. Clone the repository
+```
+git clone https://github.com/ladominguez/crsmex_online.git
+```
