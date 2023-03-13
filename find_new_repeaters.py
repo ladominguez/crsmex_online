@@ -42,7 +42,7 @@ if platform.node() == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcl
     log.setLevel(logging.WARNING)
 
 
-def find_new_repeaters(tweet_id, possible_sequences, plotting = False):
+def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
     RepeaterFound = False
     matching_sequence = []
     cc_thresholds = []
@@ -185,15 +185,16 @@ def modify_repeater_database(tweet_id, matching_sequence):
     return None
 
 if __name__ == '__main__':
-    stp_generator()
-    data_colector()
-    check_collected_data()
+    #stp_generator()
+    #data_colector()
+    #check_collected_data()
     #exit()
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
     #directories = glob.glob("./tmp/1587083561303429120")    
     for directory in directories:
+        print('Processing: ', directory)
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
         if repeating_list:
