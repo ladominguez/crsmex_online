@@ -8,6 +8,16 @@ setuptools.setup(
     url='https://github.com/ladominguez/',
     description='Looks for repeaters real time.',
     packages=setuptools.find_packages(),
-    install_requires=['pandas', 'requests','requests-oauthlib','tweepy', 'h5py', 'tqdm', 'numpy', 'pygmt']
+    install_requires=[
+        'pandas', 
+        'requests',
+        'requests-oauthlib',
+        'tweepy', 
+        'h5py', 
+        'tqdm', 
+        'numpy', 
+        'pygmt',
+        ],
+    python_requires = ">=3.8"
 
 )

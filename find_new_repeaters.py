@@ -14,6 +14,7 @@ from crsmex import get_correlation_coefficient, FFTshift
 from pandas import DataFrame, read_pickle
 from sklearn import preprocessing
 import logging
+import platform
 
 plt.rcParams.update({'font.size': 16})
 from plotting_tools import plot_sequence_candidates
@@ -35,7 +36,7 @@ fh.setLevel(logging.WARNING)
 log.addHandler(fh)
 
 
-if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcloud server
+if platform.node() == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcloud server
     from systemd.journal import JournalHandler
     log.addHandler(JournalHandler())
     log.setLevel(logging.WARNING)
@@ -169,7 +170,7 @@ def modify_repeater_database(tweet_id, matching_sequence):
                ' ' + str(tweet_id), matching_sequence))
         con.commit()
         con.close()
-        log.info('Sucessfully added tweet ' + str(tweet_id) + ' to repeating sequence ' matching_sequence + '.')
+        log.info('Sucessfully added tweet ' + str(tweet_id) + ' to repeating sequence ' + matching_sequence + '.')
         Success = True
     else:
         log.warning('More than one sequence matches twitter id ' + tweet_id + ' earthquake was not added to any sequence.')
@@ -184,12 +185,12 @@ def modify_repeater_database(tweet_id, matching_sequence):
     return None
 
 if __name__ == '__main__':
-    #stp_generator()
-    #data_colector()
-    #check_collected_data()
+    stp_generator()
+    data_colector()
+    check_collected_data()
     #exit()
     #tweet_id=1582015080493092864
-    tweet_id = 1581813685726908417
+    #tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
     #directories = glob.glob("./tmp/1587083561303429120")    
     for directory in directories:

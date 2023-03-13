@@ -41,6 +41,8 @@ def stp_generator():
         if not os.path.isfile(os.path.join(root_crsmex, 'tmp', entry['tweet_id'], 'get_data.stp')):
             fid = open(os.path.join(root_crsmex, 'tmp',
                                     entry['tweet_id'], 'get_data.stp'), 'w')
+        else:
+            continue # get_data.stp was generated although no data was downloaded.
 
         for n, station in stations.iterrows():
             sta_loc = (station['stla'], station['stlo'])

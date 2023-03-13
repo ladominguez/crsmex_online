@@ -19,3 +19,23 @@ export ROOT_CRSMEX="(Fill)"
 ```
 git clone https://github.com/ladominguez/crsmex_online.git
 ```
+
+4. Go to the directory, create and activate conda enviroment. 
+```
+cd crsmex_online
+create conda -n twitter python=3.8
+conda activate twitter
+```
+
+5. Create a linnk to the service
+```
+ln -s $PATH/crsmex.service /etc/systemd/system/crsmex.service
+```
+
+6. Reload the system service files to use the new service, and start the service.
+```
+sudo systemctl daemon-reload
+systemctl --user start crsmex
+```
+
+

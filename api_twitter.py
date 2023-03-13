@@ -9,8 +9,10 @@ import sqlite3
 from util import *
 from datetime import datetime
 import pytz
+from find_new_repeaters import find_new_repeaters
+from data_colector import *
 
-Tweets_max = 50
+Tweets_max = 100
 # your Twitter API key and API secret
 my_api_key = os.environ["API_KEY_TWITTER"]
 my_api_secret = os.environ["API_KEY_SECRET_TWITTER"]
@@ -32,13 +34,14 @@ fh.setFormatter(logging.Formatter(FORMAT))
 fh.setLevel(logging.DEBUG)
 log.addHandler(fh)
 
-if platform.node == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcloud server
+if platform.node() == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcloud server
     from systemd.journal import JournalHandler
     log.addHandler(JournalHandler())
     log.setLevel(logging.DEBUG)
 
 userID = 'SismologicoMX'
 
+# Run forever 
 while True:
     auth = tw.OAuthHandler(my_api_key, my_api_secret)
     api = tw.API(auth, wait_on_rate_limit=True)
@@ -117,5 +120,17 @@ while True:
     con.close()
     log.info('Tweets: %d - new earthquakes: %d, Eq. in catalog: %d, Total Tweets: %d, Total: %d',
              len(tweets_df), new, Nc, Nt, Nt+Nc)
-    tt.sleep(900)
+    stp_generator()
+    data_colector()
+    check_collected_data()
+    directories = glob.glob("./tmp/[0-9]*")
+    for directory in directories:
+        tweet_id = directory.split('/')[2]
+        repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+        if repeating_list:
+            print('list: ', repeating_list)
+            print(tweet_id, repeating_list)
+            find_new_repeaters(tweet_id, repeating_list, plotting = False)
+    exit()
+    #tt.sleep(900)
 #log.info('Number of tweets: %d ', len(tweets_df), 'New earthquakes: ', new, 'Events in the database: ', len(results))
