@@ -1,0 +1,38 @@
+2023-03-14 19:35:27,910 {api_twitter.py:48} INFO - Reading tweets.
+Traceback (most recent call last):
+  File "api_twitter.py", line 49, in <module>
+    tweets = api.user_timeline(screen_name=userID,
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/tweepy/api.py", line 33, in wrapper
+    return method(*args, **kwargs)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/tweepy/api.py", line 46, in wrapper
+    return method(*args, **kwargs)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/tweepy/api.py", line 571, in user_timeline
+    return self.request(
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/tweepy/api.py", line 216, in request
+    resp = self.session.request(
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/requests/sessions.py", line 587, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/requests/sessions.py", line 701, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/requests/adapters.py", line 489, in send
+    resp = conn.urlopen(
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/urllib3/connectionpool.py", line 703, in urlopen
+    httplib_response = self._make_request(
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/urllib3/connectionpool.py", line 449, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/site-packages/urllib3/connectionpool.py", line 444, in _make_request
+    httplib_response = conn.getresponse()
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/http/client.py", line 1348, in getresponse
+    response.begin()
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/http/client.py", line 316, in begin
+    version, status, reason = self._read_status()
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/http/client.py", line 277, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/socket.py", line 669, in readinto
+    return self._sock.recv_into(b)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/Users/antonio/opt/miniconda3/envs/twitter/lib/python3.8/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt

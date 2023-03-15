@@ -54,6 +54,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
         process_stations = list(set(stations_seq).intersection(set(stations_tweet)))
         phases = read_pickle(os.path.join(root_crsmex,'tmp',str(tweet_id),'phases.pkl'))
         phases.set_index("station", drop = False, inplace = True)
+        print('tweet_id: ', tweet_id)
         for sta_tweet in process_stations:
             tp_master = phases.loc[sta_tweet]["P"]
             waveforms = sequence_group.get(sta_tweet)
@@ -105,8 +106,9 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
                 #else:
                 test = wave_filt[index_out]
                 cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
-                if cc >= 0.2:
-                    print('Repeater found:', tweet_id, ' sequence: ', sequence, ' sta:', sta_tweet, 'cc: ', cc, 'ts: ', tshift) 
+                if cc >= config["cc_lim"]:
+                    log.info('Repeater found:' + tweet_id + ' sequence: ' + str(sequence) + ' sta: ' +  sta_tweet
+                             + ' cc: ' +  str(cc) + ' ts: ' + str(tshift)) 
                     RepeaterFound = True
                     matching_sequence.append(sequence)
                     cc_thresholds.append(sequence)

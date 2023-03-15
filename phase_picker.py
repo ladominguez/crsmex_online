@@ -2,7 +2,7 @@
 #from turtle import color
 #from urllib.parse import _NetlocResultMixinStr
 from obspy.core import read
-from obspy.signal.trigger import ar_pick
+from obspy.signal.trigger import ar_pick, pk_baer
 from matplotlib import pyplot as plt
 from util import load_configuration
 import os
@@ -57,7 +57,7 @@ def phase_picker(directory,plotting=False):
 
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
-    cursor.execute("SELECT latitude, longitude, depth FROM twitter WHERE tweet_id = ?", (directory,))
+    cursor.execute("SELECT latitude, longitude, depth FROM twitter WHERE tweet_id =?", (directory,))
 
     db_result = cursor.fetchone()
     if db_result is not None:
@@ -66,7 +66,7 @@ def phase_picker(directory,plotting=False):
         raise Exception('Tweet ' + str(tweet.id) + ' not in the database.')
 
     stream.detrend()
-    Nsubplots = len(stream)/3
+    Nsubplots = len(stream.select(channel='HHZ'))
     m = 0
 
     P_list = []
@@ -78,13 +78,13 @@ def phase_picker(directory,plotting=False):
     tslice_start_list = []
     tslice_stop_list = []
 
-
-
     for sta in stations['station']:
         st_sta = stream.select(station=sta)
         st_sta.detrend()
         st_sta.taper(max_percentage = 0.04)
         if st_sta:
+            error_P = False
+            error_S = False
             ds = st_sta.select(channel='HHZ')[0].stats.sampling_rate
             tstart = st_sta.select(channel='HHZ')[0].stats.starttime
 
@@ -96,17 +96,45 @@ def phase_picker(directory,plotting=False):
             tslice_stop = tstart + tp_teo+slice_after
             slice_data = st_sta.slice(tslice_start, tslice_stop)
 
-            tz = slice_data.select(channel='HHZ')[0].data
-            te = slice_data.select(channel='HHE')[0].data
-            tn = slice_data.select(channel='HHN')[0].data
-
+            
             try:
-                p_pick, s_pick = ar_pick(tz, te, tn, ds, f1, f2, lta_p, sta_p, lta_s, sta_p, m_p, m_s, l_p, l_s, True)
-            except ValueError:
-                continue
+                tz = slice_data.select(channel='HHZ')[0].data
+            except IndexError:
+                pass
+            try:
+                te = slice_data.select(channel='HHE')[0].data
+            except IndexError:
+                pass
+            try:
+                tn = slice_data.select(channel='HHN')[0].data
+            except IndexError:
+                pass
 
-            p_pick = p_pick + tp_teo + slice_before
-            s_pick = s_pick + tp_teo + slice_before
+            if len(slice_data) == 3:
+                try:
+                    p_pick, s_pick = ar_pick(tz, te, tn, ds, f1, f2, lta_p, 
+                                             sta_p, lta_s, sta_p, m_p, m_s, l_p, l_s, True)
+                except ValueError:
+                    continue
+            else:
+                try:
+                    p_pick_samples, _ = pk_baer(tz, slice_data.select(channel='HHZ')[0].stats.sampling_rate, 
+                                                20, 60, 7.0, 12.0, 100, 100)
+                except ValueError:
+                    error_P = True
+                    error_S = True
+                else:
+                    p_pick = p_pick_samples/slice_data.select(channel='HHZ')[0].stats.sampling_rate
+                    error_S = True
+            if error_P:
+                p_pick = tp_teo + slice_before
+            else: 
+                p_pick = p_pick + tp_teo + slice_before
+
+            if error_S:
+                s_pick = s_pick + tp_teo + slice_before
+            else:
+                s_pick = s_pick + tp_teo + slice_before
 
             Sta_list.append(sta)
             P_list.append(round(p_pick,2))
@@ -123,6 +151,7 @@ def phase_picker(directory,plotting=False):
                         'depth' : depths,'dist' : dist,
                         'tslice_start' : tslice_start_list,
                         'tslice_stop' : tslice_stop_list})
+    print(phases)
     phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
 
     if plotting:

@@ -8,6 +8,7 @@ import sqlite3
 import os
 import glob
 import json
+import logging
 from datetime import datetime, timedelta
 from geopy.distance import great_circle
 from util import load_configuration
@@ -21,12 +22,23 @@ config = load_configuration()
 root_crsmex = os.environ["ROOT_CRSMEX"]
 input="in " + config["stp_file_name"] + "\nexit\n"
 
+# Logging configuration
+FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
+log = logging.getLogger(name='CRSMEX')
+log.setLevel(logging.INFO)
+logging.basicConfig(format=FORMAT)
+
+fh = logging.FileHandler(os.path.join(root_crsmex, 'logger.txt'))
+fh.setFormatter(logging.Formatter(FORMAT))
+fh.setLevel(logging.DEBUG)
+log.addHandler(fh)
+
 
 def stp_generator():
     # Connecting to database
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
-    cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
+    cmd_sql = r"SELECT datetime, latitude, longitude, depth, tweet_id, nearby_sta FROM twitter WHERE data_downloaded == 0;"
     df = pd.read_sql_query(cmd_sql, con)
     stations = pd.read_pickle(os.path.join(root_crsmex, config["stations"]))
 
@@ -88,7 +100,7 @@ def check_collected_data():
     directories = os.listdir(os.path.join(root_crsmex,'tmp'))
 
     for directory in directories:
-        cmd_sql = r"select nearby_sta, tweet_id from twitter where tweet_id= " + directory + ";"
+        cmd_sql = r"SELECT nearby_sta, tweet_id FROM twitter WHERE tweet_id= " + directory + ";"
         cursor.execute(cmd_sql)
         results = cursor.fetchall()
         if len(results) >= 2:
@@ -96,10 +108,10 @@ def check_collected_data():
         
         stations, tweet_id = results[0]
         Nsta=len(stations.split(','))
-        print('Nsta: ', Nsta, ' tweet_id: ', tweet_id)
         files_found = glob.glob(os.path.join(root_crsmex,'tmp',tweet_id,'*.sac'))
+        print('Expected: ', Nsta, ' tweet_id: ', tweet_id, ' sta_collected: ', str(len(files_found)/3), ' perc: ', str(len(files_found)*100/(3*Nsta)))
         
-        if len(files_found) == Nsta*3:
+        if (len(files_found)/(Nsta*3)) >= 0.7:
             print('UPDATING: ', tweet_id)
             update_downloaded_data = '''UPDATE twitter
                                    SET data_downloaded = ?
@@ -110,6 +122,21 @@ def check_collected_data():
 
     return None
         
+def _reset_downnloads_in_database():
+    '''
+    Modifies the sql database so all the twitter appear undownloaded. For debugging purposes only.
+    '''
+
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    cmd_sql = '''UPDATE twitter SET data_downloaded = ?
+                 WHERE data_downloaded =?'''
+    cursor.execute(cmd_sql, (False, True))
+    log.debug('Reseting data_downloaded from database. ' + str(cursor.rowcount) + ' lines edited.') 
+    con.commit()
+    con.close()
+    return None
+
 
 
 def possible_sequences(tweet_id, r_max=50):
@@ -136,9 +163,9 @@ def possible_sequences(tweet_id, r_max=50):
         eq_tweet = (tweet_lat, tweet_lon)
         eq_repeat = (repeat['latitude' ], repeat['longitude'])
         distance = great_circle(eq_tweet, eq_repeat).km
-        print(tweet['tweet_id'],distance)
+        #print(tweet['tweet_id'],distance)
         if distance <= r_max:
-            print(distance, repeat['ID'], tweet['tweet_id'],eq_tweet)
+            print(distance, repeat['ID'], tweet_id, eq_tweet)
             id_list.append(int(repeat['ID']))
         
     con.close()
@@ -150,7 +177,8 @@ if __name__ == '__main__':
     #stp_generator()
     #data_colector()
 
-    check_collected_data()
+    #check_collected_data()
     #tweet_id=1582015080493092864
-    #repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-    #plot_sequence_candidates(tweet_id, repeating_list) 
+    repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+    plot_sequence_candidates(tweet_id, repeating_list) 
+    #_reset_downnloads_in_database()

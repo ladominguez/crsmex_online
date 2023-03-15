@@ -84,12 +84,12 @@ while True:
                                                         'tweet_time': tweet.created_at,
                                                         'text': tweet.full_text}, index=[0])])
 
-        print("====================================================================")
-        print(tweet.full_text)
-        print('type: ', type(tweet.id))
-        print('time: ', datetime, ' Latitude: ', latitude,
+        log.debug("====================================================================")
+        log.debug(tweet.full_text)
+        log.debug('type: ', type(tweet.id))
+        log.debug('time: ', datetime, ' Latitude: ', latitude,
               ' Longitude: ', longitude, ' depth: ', depth)
-        print('mag: ', magnitude, ' tweet_id: ', tweet.id)
+        log.debug('mag: ', magnitude, ' tweet_id: ', tweet.id)
         entries = [datetime, time_utc.timestamp(), latitude,
                    longitude, depth, magnitude,
                    tweet.id, tweet.created_at, tweet.full_text,
@@ -120,9 +120,9 @@ while True:
     con.close()
     log.info('Tweets: %d - new earthquakes: %d, Eq. in catalog: %d, Total Tweets: %d, Total: %d',
              len(tweets_df), new, Nc, Nt, Nt+Nc)
-    stp_generator()
-    data_colector()
-    check_collected_data()
+    #stp_generator()
+    #data_colector()
+    #check_collected_data()
     directories = glob.glob("./tmp/[0-9]*")
     for directory in directories:
         tweet_id = directory.split('/')[2]
