@@ -15,6 +15,7 @@ import matplotlib as mpl
 import sqlite3
 from geopy.distance import great_circle
 from obspy.taup import TauPyModel
+from numpy import sqrt
 
 mpl.use('Agg')
 
@@ -89,8 +90,15 @@ def phase_picker(directory,plotting=False):
             tstart = st_sta.select(channel='HHZ')[0].stats.starttime
 
             distance = great_circle((latitude_eq, longitude_eq),(st_sta[0].stats.sac.stla, st_sta[0].stats.sac.stlo)).kilometers/111.19
-            arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
-            tp_teo = round(arrivals[0].time,2) + t0
+            try:
+                arrivals = model.get_travel_times(source_depth_in_km=depth, distance_in_degree=distance,  phase_list=["p", "P"])
+            except:
+                arrival_p = sqrt(depth**2 + (distance*111.11)**2)/5.5
+
+            try:
+                tp_teo = round(arrivals[0].time,2) + t0
+            except:
+                tp_teo = arrival_p + t0
 
             tslice_start = tstart + tp_teo+slice_before 
             tslice_stop = tstart + tp_teo+slice_after

@@ -152,20 +152,20 @@ def possible_sequences(tweet_id, r_max=50):
 
     results = cursor.fetchall()
     if not results:
-        print(cmd_sql1)
+        #print(cmd_sql1)
         return []
     
     #for index1, tweet in twitter.iterrows():
     id_list = []
     tweet_lat, tweet_lon,  nearby_sta = results[0] 
-    print('Length repeaters: ', len(repeaters))
+    #print('Length repeaters: ', len(repeaters))
     for index2, repeat in repeaters.iterrows():
         eq_tweet = (tweet_lat, tweet_lon)
         eq_repeat = (repeat['latitude' ], repeat['longitude'])
         distance = great_circle(eq_tweet, eq_repeat).km
         #print(tweet['tweet_id'],distance)
         if distance <= r_max:
-            print(distance, repeat['ID'], tweet_id, eq_tweet)
+            #print(distance, repeat['ID'], tweet_id, eq_tweet)
             id_list.append(int(repeat['ID']))
         
     con.close()

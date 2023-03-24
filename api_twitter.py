@@ -62,7 +62,7 @@ while True:
     # populate the dataframe
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
-    print('Tweet copy: ', type(tweets_copy))
+    #print('Tweet copy: ', type(tweets_copy))
 
     new = 0
     for tweet in reversed(tweets_copy):
@@ -128,8 +128,8 @@ while True:
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
         if repeating_list:
-            print('list: ', repeating_list)
-            print(tweet_id, repeating_list)
+            #print('list: ', repeating_list)
+            #print(tweet_id, repeating_list)
             find_new_repeaters(tweet_id, repeating_list, plotting = False)
     exit()
     #tt.sleep(900)
