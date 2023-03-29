@@ -43,10 +43,27 @@ if platform.node() == 'ubuntu-1cpu-1gb-us-nyc1':  # ubuntu-1cpu-1gb-us-nyc1 upcl
 
 
 def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
+    times_repeater = {}
+    waveforms_repeater = {}
+    times_test_repeater = {}
+    waveforms_test_repeater = {}
+    stations_sequence = {}
+    cc_thresholds = {}
+    tshift_thresholds = {}
+    datetimes_repeater = {}
+    magnitude_repeater = {}
     matching_sequence = []
-    cc_thresholds = []
+    cc_max_per_sequence = []
+    # Loops for every nearby sequence
     for sequence in possible_sequences:
+        stations_above_threshold = 0
         RepeaterFound = False
+        times_repeater[sequence] = {}
+        waveforms_repeater[sequence] = {}
+        times_test_repeater[sequence] = {}
+        waveforms_test_repeater[sequence] = {}
+        repeater_list_station = []
+        #cc_thresholds = []
         sequence_group = h5.get('S' + '%05d'%(sequence))
         stations_seq = list(sequence_group.attrs.get('stations'))
         sac = ob.read(os.path.join(root_crsmex,'tmp',str(tweet_id),'*Z.sac'))
@@ -54,12 +71,17 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
         process_stations = list(set(stations_seq).intersection(set(stations_tweet)))
         phases = read_pickle(os.path.join(root_crsmex,'tmp',str(tweet_id),'phases.pkl'))
         phases.set_index("station", drop = False, inplace = True)
-        #print('tweet_id: ', tweet_id)
+        stations_sequence[sequence] = process_stations
+
+        # Loops for each station
         for sta_tweet in process_stations:
+            times_test_repeater[sequence][sta_tweet] = []
+            waveforms_test_repeater[sequence][sta_tweet] = []
+            times_repeater[sequence][sta_tweet] = []
+            waveforms_repeater[sequence][sta_tweet] = []
             tp_master = phases.loc[sta_tweet]["P"]
             waveforms = sequence_group.get(sta_tweet)
 
-            n_members = len(waveforms.keys())
             master_tweet = ob.read(os.path.join(root_crsmex,'tmp',str(tweet_id),'*' + sta_tweet + '*Z.sac'))
             master_tweet.decimate(5)
             master = master_tweet[0].data
@@ -67,7 +89,18 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
             b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = master_tweet[0].stats.sampling_rate)
             master = signal.filtfilt(b, a, master)
             index_master,  = np.where((t_master >= -2.0) & ( t_master < (-2 + config["npts_win"]*(1/master_tweet[0].stats.sampling_rate))))
- 
+            
+            times_test_repeater[sequence][sta_tweet].append(t_master)
+            waveforms_test_repeater[sequence][sta_tweet].append(master)            
+
+            # Loops for each waveform
+
+            cc_per_station = []
+            tshift_per_station = []
+            datetimes_list = []
+            magnitude_list = []
+
+
             for m, wave_key in enumerate(waveforms.keys()):
                 wave = np.array(waveforms.get(wave_key))
                 delta = waveforms.get(wave_key).attrs['delta']
@@ -75,47 +108,85 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
                 t5 = waveforms.get(wave_key).attrs['t5']
                 beg = waveforms.get(wave_key).attrs['b']
                 datetime = waveforms.get(wave_key).attrs['datetime']
-                mag = waveforms.get(wave_key).attrs['magnitude']
- 
+                datetimes_list.append(datetime)
+                magnitude_list.append(waveforms.get(wave_key).attrs['magnitude'])
 
                 b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = 1/delta)
                 wave_filt = signal.filtfilt(b, a, wave)
                 time = np.linspace(start=beg,stop=(npts-1)*delta + beg,
                                    num=npts)
-                time = time -(t5)
+                time = time - (t5)
+                times_test_repeater[sequence][sta_tweet].append(time)
+                waveforms_test_repeater[sequence][sta_tweet].append(wave_filt)
+
+                #print('+++++++++++++++++++++++++++++++')
+                #print('sequence: ', sequence)
+                #print('sta_tweet: ', sta_tweet)
+                #print('len: ', len(times_test_repeater[sequence][sta_tweet]))
+                #print('+++++++++++++++++++++++++++++++')
 
                 index_out,  = np.where((time >= -2.0) & ( time < (-2 + config["npts_win"]*delta)))
                 
-                #if not m:
-                #    master = wave_filt[index_out]
-                #    tshift = 0
-                #else:
                 test = wave_filt[index_out]
                 cc, tshift = get_correlation_coefficient(master[index_master], test, delta)
-                if cc >= config["cc_lim"]:
-                    log.info('Repeater found:' + tweet_id + ' sequence: ' + str(sequence) + ' sta: ' +  sta_tweet
-                             + ' cc: ' +  str(cc) + ' ts: ' + str(tshift)) 
-                    RepeaterFound = True
-                    matching_sequence.append(sequence)
-                    cc_thresholds.append(sequence)
-                    if plotting:
-                        print('Subplots: ', n_members + 2)
-                        fig, ax = plt.subplots(nrows=n_members+2, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+2)),
-                                    sharex=True)
-                        color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
+                cc_per_station.append(cc)
+                tshift_per_station.append(tshift)
+            if np.max(cc_per_station) > 0.65:
+                print('cc_max_per_station: ', np.max(cc_per_station))
+            if np.max(cc_per_station) >= config["cc_lim"]:
+                repeater_list_station.append(sta_tweet)
+                stations_above_threshold += 1
+                times_repeater[sequence][sta_tweet] = times_test_repeater[sequence][sta_tweet]
+                waveforms_repeater[sequence][sta_tweet] = waveforms_test_repeater[sequence][sta_tweet]
+                RepeaterFound = True
+                matching_sequence.append(sequence)
+                cc_max_per_sequence.append(np.max(cc_per_station))
+                cc_thresholds[sequence] = {}
+                tshift_thresholds[sequence] = {}
+                datetimes_repeater[sequence] = {}
+                magnitude_repeater[sequence] = {}
 
-                        ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
-                        ax[0,0].legend()
-                        ax[0,0].axvline(0)
-                        ax[0,0].grid(which='major')
-                        #ax[n_members+1,0].plot(t_master[index_master], master[index_master]/np.max(np.abs(master[index_master])),  color = 'r', linewidth = 0.5)
-                        ax[n_members+1,0].plot(t_master[index_master], master[index_master]/np.max(np.abs(master[index_master])),  color = 'r', linewidth = 0.5)
-                        ax[n_members+1,0].axvline(0)
-                        #ax[n_members+1,0].legend()
-                        ax[n_members+1,0].grid(which='major')
+                cc_thresholds[sequence][sta_tweet] = cc_per_station
+                tshift_thresholds[sequence][sta_tweet] = tshift_per_station
+                datetimes_repeater[sequence][sta_tweet] = datetimes_list
+                magnitude_repeater[sequence][sta_tweet] = magnitude_list
 
-                if plotting and RepeaterFound:
-                    ax[m+1,0].plot(time, wave_filt, color = 'k', linewidth = 0.5, label = datetime +", M" + '%3.1f'%(mag) + " cc: " + '%4.2f' % (cc))
+        #print('tweet_id: ', tweet_id, ' sequence: ', sequence, ' station: ', sta_tweet, ' cc: ', cc_thresholds_max_per_sequence[sequence])
+        #if any([x >= config["cc_lim"] for x in cc_thresholds_max_per_sequence[sequence][sta_tweet]]):
+        if RepeaterFound:
+            for sta_detected in repeater_list_station:
+                log.info('Repeater found:' + tweet_id + ' sequence: ' + str(sequence) + ' sta: ' +  sta_detected
+                     + ' cc_max: ' +  str(np.max(cc_thresholds[sequence][sta_detected])) ) 
+            #matching_sequence.append(sequence)
+
+        if plotting and RepeaterFound:
+            match = matching_sequence[0]
+            for sta_detected in repeater_list_station: 
+                n_members = len(times_repeater[match][sta_detected])
+                print('Subplots: ', n_members + 1)
+                fig, ax = plt.subplots(nrows=n_members+1, ncols=1, squeeze=False, figsize = (14, 1.8*(n_members+2)),
+                            sharex=True)
+                color = iter(cm.rainbow(np.linspace(0, 1, n_members)))
+
+                ax[0,0].plot(t_master, master,  color = 'k', linewidth = 0.5, label = str(tweet_id))
+                ax[0,0].legend()
+                ax[0,0].axvline(0)
+                ax[0,0].grid(which='major')
+                #ax[n_members+1,0].plot(t_master[index_master], master[index_master]/np.max(np.abs(master[index_master])),  color = 'r', linewidth = 0.5)
+                ax[n_members,0].plot(t_master[index_master], master[index_master]/np.max(np.abs(master[index_master])),  color = 'r', linewidth = 0.5)
+                ax[n_members,0].axvline(0)
+                #ax[n_members+1,0].legend()
+                ax[n_members,0].grid(which='major')
+                print('match: ', match)
+                print('sta_detected: ', sta_detected)
+                #print('times_repeater: ', times_repeater[match][sta_detected])
+
+                for m, (time, wave_filt,cc, tshift) in enumerate(zip(times_repeater[match][sta_detected], 
+                                                   waveforms_repeater[match][sta_detected],
+                                                   cc_thresholds[match][sta_detected],
+                                                   tshift_thresholds[match][sta_detected])): 
+                    ax[m+1,0].plot(time, wave_filt, color = 'k', linewidth = 0.5, label = datetimes_repeater[match][sta_detected][m] 
+                                        +", M" + '%3.1f'%(magnitude_repeater[match][sta_detected][m]) + " cc: " + '%4.2f' % (cc))
                     #ax[m+1,0].plot(time[index_out], wave_filt[index_out], color = 'red', linewidth = 1)
                     ax[m+1,0].axvline(0)
                     ax[m+1,0].grid(which='major')
@@ -123,16 +194,22 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
                     ax[m+1,0].set_xlim((-3, config['window']))
                     ax[m+1,0].legend()
                     tshift=0
-                    #ax[n_members+1,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color),
-                    #                     linewidth= 0.5)
-                    #ax[n_members+1,0].grid(which='major')
-                    #ax[n_members+1,0].grid(which='minor')
-                    #ax[n_members+1,0].set_xlim((-3, config['window']))
-            if plotting and RepeaterFound:
-                fig.suptitle('Sequence ' +  '%05d'%(sequence) + ' - ' + sta_tweet + ' - Testing Tweet: ' + str(tweet_id)) 
-                plt.savefig(os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
-                print('Saving: ', os.path.join(root_crsmex,'tmp',str(tweet_id), sta_tweet + '.S' + '%05d'%(sequence) + '.png'))
+                    #ax[n_members+1,0].plot(time, wave_filt, color = next(color), linewidth= 0.5)
+                    ax[n_members,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color),
+                                     linewidth= 0.5)
+                    ax[n_members,0].grid(which='major')
+                    ax[n_members,0].grid(which='minor')
+                    ax[n_members,0].set_xlim((-3, config['window']))
+                print('datetime: ', datetime)
+                fig.suptitle('Sequence ' +  '%05d'%(sequence) + ' - ' + sta_detected + ' - Testing Tweet: ' + str(tweet_id)) 
+                plt.savefig(os.path.join(root_crsmex,'tmp',str(tweet_id), sta_detected + '.S' + '%05d'%(sequence) + '.png'))
+                print('Saving: ', os.path.join(root_crsmex,'tmp',str(tweet_id), sta_detected + '.S' + '%05d'%(sequence) + '.png'))
+                print('cc: ', cc_thresholds)
                 plt.close()
+                RepeaterFound = False
+            # End waveform loop
+        # End station loop
+    # End sequence loop
     return RepeaterFound, matching_sequence, cc_thresholds
 
 def _get_twitter_info(tweet_id):
@@ -189,8 +266,8 @@ if __name__ == '__main__':
     #exit()
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
-    directories = glob.glob("./tmp/[0-9]*")
-    #directories = glob.glob("./tmp/1587083561303429120")    
+    #directories = glob.glob("./tmp/[0-9]*")
+    directories = glob.glob("./tmp/1584168773304868866")    
     for directory in directories:
         print('Processing: ', directory)
         tweet_id = directory.split('/')[2]
