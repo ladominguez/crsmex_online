@@ -27,7 +27,7 @@ create conda -n twitter python=3.8
 conda activate twitter
 ```
 
-5. Create a linnk to the service
+5. Create a link to the service
 ```
 ln -s $PATH/crsmex.service /etc/systemd/system/crsmex.service
 ```

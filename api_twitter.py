@@ -120,9 +120,9 @@ while True:
     con.close()
     log.info('Tweets: %d - new earthquakes: %d, Eq. in catalog: %d, Total Tweets: %d, Total: %d',
              len(tweets_df), new, Nc, Nt, Nt+Nc)
-    #stp_generator()
-    #data_colector()
-    #check_collected_data()
+    stp_generator()
+    data_colector()
+    check_collected_data()
     directories = glob.glob("./tmp/[0-9]*")
     for directory in directories:
         tweet_id = directory.split('/')[2]
