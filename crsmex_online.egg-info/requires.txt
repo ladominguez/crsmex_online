@@ -1,0 +1,7 @@
+pandas
+requests-oauthlib
+tweepy
+h5py
+tqdm
+numpy
+pygmt

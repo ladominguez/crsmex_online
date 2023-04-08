@@ -10,7 +10,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'pandas', 
-        'requests',
         'requests-oauthlib',
         'tweepy', 
         'h5py', 

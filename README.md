@@ -23,7 +23,7 @@ git clone https://github.com/ladominguez/crsmex_online.git
 4. Go to the directory, create and activate conda enviroment. 
 ```
 cd crsmex_online
-create conda -n twitter python=3.8
+conda create -n twitter python=3.8
 conda activate twitter
 ```
 

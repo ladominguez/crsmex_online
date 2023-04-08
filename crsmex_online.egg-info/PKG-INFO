@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: crsmex-online
+Version: 0.0.1
+Summary: Looks for repeaters real time.
+Home-page: https://github.com/ladominguez/
+Author: Luis A. Dominguez
+Author-email: ladominguez@ucla.edu
+Requires-Python: >=3.8
