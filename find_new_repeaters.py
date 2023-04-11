@@ -207,7 +207,7 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
                                                #tshift_thresholds[match][sta_detected])):
 
                 if not m: # master label
-                    label = str(tweet_id)
+                    label = ('%s - M%.2f'%_get_twitter_info(1635098967141916673)).replace('T',',')
                 else:
                     label = datetimes_repeater[match][sta_detected][m-1] + ", M" + '%3.1f' % (magnitude_repeater[match][sta_detected][m-1]) + " cc: " + '%4.2f' % (cc_thresholds[match][sta_detected][m-1])
 
@@ -219,13 +219,12 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
                 ax[m,0].legend()
 
                 if m: # for repeaters in the sequence
-                    ax[n_members,0].plot(time, wave_filt/np.max(np.abs(wave_filt)), color = next(color), linewidth= 0.5)
+                    tshift = 1*tshift_thresholds[match][sta_detected][m-1]
+                    ax[n_members,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = next(color), linewidth= 0.5)
                 else: # For testing waveform (Tweet)
                     #print('match: ', match, ' sta_detected: ', sta_detected)
                     #print('cc_thresholds[match]: ', cc_thresholds[match])
-                    tshift = -1*tshift_thresholds[match][sta_detected][np.argmax(cc_thresholds[match][sta_detected])]
-                    ax[n_members,0].plot(time, FFTshift(wave_filt/np.max(np.abs(wave_filt)),float(tshift/delta)), color = 'k',
-                                        linewidth= 1.0)
+                    ax[n_members,0].plot(time, wave_filt/np.max(np.abs(wave_filt)), color = next(color), linewidth= 0.5)
                 ax[n_members,0].axvline(0)
                 ax[n_members,0].grid(which='major')
                 ax[n_members,0].grid(which='minor')
@@ -243,7 +242,11 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
 def _get_twitter_info(tweet_id):
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
-    get_twitter_info = '''SELECT datetime ''' 
+    get_twitter_info = '''SELECT datetime, mag FROM twitter WHERE tweet_id = ?;'''
+    cursor.execute(get_twitter_info,(tweet_id,))
+    db_results = cursor.fetchone()
+    
+    return db_results 
 
 def modify_repeater_database(tweet_id, matching_sequence):
     Success = False
@@ -295,11 +298,12 @@ if __name__ == '__main__':
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
-    #directories = glob.glob("./tmp/1585799367524352001")    
+    #directories = glob.glob("./tmp/1635098967141916673")    
     for directory in directories:
-        print('Processing: ', directory)
+        #print('Processing: ', directory)
         tweet_id = directory.split('/')[2]
         repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+        #repeating_list = [297]
         if repeating_list:
             #print('list: ', repeating_list)
             #print(tweet_id, repeating_list)

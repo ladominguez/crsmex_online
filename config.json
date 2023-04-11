@@ -17,6 +17,7 @@
 "stp_file_name" : "get_data.stp",
 "SSNstp" : "/Users/antonio/bin/SSNstp",
 "time_zone" : "America/Mexico_City",
+"timeout": 50,
 "vel_model" : "taup/ssn.npz",
 "window" : 25.5
 }

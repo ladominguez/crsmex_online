@@ -99,7 +99,7 @@ while True:
             "SELECT rowid FROM twitter WHERE tweet_id = ?", (tweet.id,))
         db_result = cursor.fetchone()
         if db_result is not None:
-            print('tweet: ', tweet.id, ' is in the databse.')
+            print('tweet: ', tweet.id, ' is in the database.')
         else:
             new += 1
             print('Inserting')

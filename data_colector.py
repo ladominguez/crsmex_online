@@ -1,6 +1,6 @@
 from importlib.metadata import entry_points
 from re import I, U
-from subprocess import Popen, PIPE, DEVNULL
+from subprocess import Popen, PIPE, DEVNULL, TimeoutExpired
 from tkinter import W
 from urllib.parse import _NetlocResultMixinBytes, _NetlocResultMixinStr
 import pandas as pd
@@ -25,7 +25,7 @@ input="in " + config["stp_file_name"] + "\nexit\n"
 # Logging configuration
 FORMAT = '%(asctime)-15s {%(filename)s:%(lineno)d} %(levelname)s - %(message)s'
 log = logging.getLogger(name='CRSMEX')
-log.setLevel(logging.INFO)
+log.setLevel(logging.DEBUG)
 logging.basicConfig(format=FORMAT)
 
 fh = logging.FileHandler(os.path.join(root_crsmex, 'logger.txt'))
@@ -88,10 +88,18 @@ def data_colector():
         if os.path.isdir(os.path.join(root_crsmex,'tmp',directory)):
             os.chdir(os.path.join(root_crsmex,'tmp',directory))
             if os.path.isfile(config['stp_file_name']):
-               os.system('cat ' + config['stp_file_name'])
-               p = Popen(config["SSNstp"],stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0) 
-               p.communicate(input.encode('ascii'))
-               os.system('ls')
+                log.debug('Requesting data for ' + directory + ' ...')
+                print('Requesting data for ' + directory + ' ...')
+                p = Popen(config["SSNstp"],stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0) 
+                try:
+                    outs, err = p.communicate(input.encode('ascii'),timeout = config['timeout'])
+                except TimeoutExpired:
+                    p.kill()
+                    log.info('Data requested for ' + directories + ' timeout. ')
+                    print('Data requested for ' + directories + ' timeout. ')
+    
+                
+               
     return None
 
 def check_collected_data():
