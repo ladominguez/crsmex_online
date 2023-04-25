@@ -79,15 +79,15 @@ def stp_generator():
     return None
 
 def data_colector():
-    #con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
-    #cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
-    #df = pd.read_sql_query(cmd_sql, con)
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
+    df = pd.read_sql_query(cmd_sql, con)
 
     directories = os.listdir(os.path.join(root_crsmex,'tmp'))
     for directory in directories:
         if os.path.isdir(os.path.join(root_crsmex,'tmp',directory)):
             os.chdir(os.path.join(root_crsmex,'tmp',directory))
-            if os.path.isfile(config['stp_file_name']):
+            if os.path.isfile(config['stp_file_name']) and  not df.loc[df['tweet_id'] == directory].empty:
                 log.debug('Requesting data for ' + directory + ' ...')
                 print('Requesting data for ' + directory + ' ...')
                 p = Popen(config["SSNstp"],stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0) 
@@ -95,8 +95,8 @@ def data_colector():
                     outs, err = p.communicate(input.encode('ascii'),timeout = config['timeout'])
                 except TimeoutExpired:
                     p.kill()
-                    log.info('Data requested for ' + directories + ' timeout. ')
-                    print('Data requested for ' + directories + ' timeout. ')
+                    log.info('Data requested for ' + directory + ' timeout. ')
+                    print('Data requested for ' + directory + ' timeout. ')
     
                 
                
@@ -113,7 +113,7 @@ def check_collected_data():
         results = cursor.fetchall()
         if len(results) >= 2:
             raise NameError('Duplicated records with the same tweet id.')
-        
+        print('directory: ', directory) 
         stations, tweet_id = results[0]
         Nsta=len(stations.split(','))
         files_found = glob.glob(os.path.join(root_crsmex,'tmp',tweet_id,'*.sac'))
@@ -182,11 +182,12 @@ def possible_sequences(tweet_id, r_max=50):
 
 
 if __name__ == '__main__':
-    #stp_generator()
+    stp_generator()
     #data_colector()
 
     #check_collected_data()
+
     #tweet_id=1582015080493092864
-    repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
-    plot_sequence_candidates(tweet_id, repeating_list) 
+    ##repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+    ##plot_sequence_candidates(tweet_id, repeating_list) 
     #_reset_downnloads_in_database()

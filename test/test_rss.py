@@ -18,23 +18,35 @@ class Parser(HTMLParser):
   def handle_comment(self, data):
     global comments
     comments.append(data)
-start_tags = []
-end_tags = []
-all_data = []
-comments = []
-# Creating an instance of our class.
-parser = Parser()
-# Poviding the input.
-parser.feed('<html><title>Desserts</title><body><p>'
-            'I am a fan of frozen yoghurt.</p><'
-            '/body><!--My first webpage--></html>')
-print("start tags:", start_tags)
-print("end tags:", end_tags)
-print("data:", all_data)
-print("comments", comments)
 
 
-rss=fp.parse("http://www.ssn.unam.mx/rss/ultimos-sismos.xml")
+if __name__ == '__main__':
+  rss=fp.parse("http://www.ssn.unam.mx/rss/ultimos-sismos.xml")
+  start_tags = [] 
+  end_tags = []
+  all_data = []
+  comments = []
+  # Creating an instance of our class.
+  parser = Parser()
+    # Poviding the input.
+#    parser.feed('<html><title>Desserts</title><body><p>'
+#                'I am a fan of frozen yoghurt.</p><'
+#                '/body><!--My first webpage--></html>')
+  for entry in rss.entries:
+    Html_Data = entry['summary_detail']['value']
+    parser.feed(Html_Data)
+    print(Html_Data)
 
-for entry in rss.entries:
-    print(entry["title"])
+    print("data:", all_data[0])
+    date = all_data[0].split()[0].split(':')[1]
+    time = all_data[0].split()[1]
+    latitude = all_data[1].split()[1].split('/')[0]
+    longitude = all_data[1].split()[1].split('/')[1]
+    depth = all_data[2].split()[1]
+    mag = entry['title'].split(',')[0]
+    print('date: ', date)
+    print('time: ', time)
+    print('latitude: ', latitude)
+    print('longitude: ', longitude)
+    print('depth: ', depth)
+    print('mag: ', mag)
