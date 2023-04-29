@@ -13,6 +13,7 @@
 "no_min_sta" : 1,
 "radius" : 25, 
 "record_length" : 120,
+"rss_feed" : "http://www.ssn.unam.mx/rss/ultimos-sismos.xml",
 "stations" : "dat/stations.pkl",
 "stp_file_name" : "get_data.stp",
 "SSNstp" : "/Users/antonio/bin/SSNstp",
