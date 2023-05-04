@@ -34,6 +34,7 @@ def create_table(filename):
     """
     con.execute(create_table_catalog)
     con.commit()
+
     create_table_twitter = """ CREATE TABLE twitter(
         ID          INTEGER PRIMARY KEY     AUTOINCREMENT,
         datetime    CHAR(22)                NOT NULL,
@@ -53,9 +54,29 @@ def create_table(filename):
 	    
     )
     """
-
     con.execute(create_table_twitter)
     con.commit()
+
+    create_table_rss = """ CREATE TABLE rss(
+        ID          INTEGER PRIMARY KEY     AUTOINCREMENT,
+        datetime    CHAR(22)                NOT NULL,
+		unixtime    FLOAT                   NOT NULL,
+		latitude    FLOAT                   NOT NULL,
+		longitude   FLOAT                   NOT NULL,
+		depth       FLOAT                   NOT NULL,
+		mag         FLOAT                   NOT NULL,
+        rss_id    VARCHAR(30)             NOT NULL,
+		data_downloaded BOOLEAN             NOT NULL,
+		analyzed        BOLLEAN             NOT NULL,
+        repeater    BOOLEAN                 NOT NULL,
+        sequence_id INTEGER,
+		nearby_sta TEXT
+	    
+    )
+    """
+    con.execute(create_table_rss)
+    con.commit()
+
     create_table_repeaters = """ CREATE TABLE repeaters(
 	     ID            INTEGER PRIMARY KEY     AUTOINCREMENT,
 		 latitude      FLOAT                   NOT NULL,

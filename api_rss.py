@@ -66,7 +66,11 @@ if __name__ == '__main__':
                                                       'longitude' : longitude,
                                                       'depth' : depth, 
                                                       'magnitude' : mag}, index=[0])])
+            
 
+            cursor.execute(
+                "SELECT rowid FROM rss WHERE rss_id = ?", (id,))
+            db_result = cursor.fetchone()
         tt.sleep(30)
 
 
