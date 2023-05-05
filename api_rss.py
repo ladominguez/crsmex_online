@@ -35,6 +35,12 @@ fh.setFormatter(logging.Formatter(FORMAT))
 fh.setLevel(logging.DEBUG)
 log.addHandler(fh)
 
+# SQL commands
+add_entry = '''INSERT INTO rss(datetime, unixtime, latitude, 
+                                        longitude, depth, mag,  
+                                        data_downloaded, analyzed, repeater, 
+                                        sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
+
 if __name__ == '__main__':
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
 
@@ -58,19 +64,22 @@ if __name__ == '__main__':
             longitude = all_data[1].split()[1].split('/')[1]
             depth = all_data[2].split()[1]
             mag = entry['title'].split(',')[0]
-            id = uuid.uuid4().int
-            print('date: ', date + ',' + time + ' lat: ' + str(latitude) + ' lon: ' + str(longitude) + ' depth: ' + depth + ' mag: ' + mag + ' id: ' + str(uuid.uuid4().int))
+            id = int(date.replace('-','') + time.replace(':','') + latitude.replace('.',''))
+            print('date: ', date + ',' + time + ' lat: ' + str(latitude) + ' lon: ' + str(longitude) + ' depth: ' + depth + ' mag: ' + mag + ' id: ' + str(id))
             rss_df = pd.concat([rss_df, pd.DataFrame({'id' : uuid.uuid4().int,
                                                       'date' : date,
                                                       'latitude' : latitude,
                                                       'longitude' : longitude,
                                                       'depth' : depth, 
                                                       'magnitude' : mag}, index=[0])])
-            
+            entries = [datetime, time_utc.timestamp(), latitude,
+                       longitude, depth, mag,
+                       False, False, False, 0]            
 
-            cursor.execute(
-                "SELECT rowid FROM rss WHERE rss_id = ?", (id,))
+            cursor.execute("SELECT rowid FROM rss WHERE rss_id = ?", (id,))
             db_result = cursor.fetchone()
+            if not db_result:
+
         tt.sleep(30)
 
 
