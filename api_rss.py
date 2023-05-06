@@ -4,6 +4,7 @@ import feedparser as fp
 from html.parser import HTMLParser
 import uuid
 import pandas as pd
+from util import get_utc_time
 
 
 class Parser(HTMLParser):
@@ -37,9 +38,8 @@ log.addHandler(fh)
 
 # SQL commands
 add_entry = '''INSERT INTO rss(datetime, unixtime, latitude, 
-                                        longitude, depth, mag,  
-                                        data_downloaded, analyzed, repeater, 
-                                        sequence_id) VALUES (?,?,?,?,?,?,?,?,?,?);'''
+                                        longitude, depth, mag, rss_id, 
+                                        data_downloaded, analyzed, repeater) VALUES (?,?,?,?,?,?,?,?,?,?);'''
 
 if __name__ == '__main__':
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
@@ -49,7 +49,8 @@ if __name__ == '__main__':
         rss=fp.parse(config['rss_feed'])
         rss_df = pd.DataFrame()
         cursor = con.cursor()
-
+        
+        new_entries = 0
         for entry in rss.entries:
             all_data = []
             start_tags = []
@@ -65,22 +66,33 @@ if __name__ == '__main__':
             depth = all_data[2].split()[1]
             mag = entry['title'].split(',')[0]
             id = int(date.replace('-','') + time.replace(':','') + latitude.replace('.',''))
-            print('date: ', date + ',' + time + ' lat: ' + str(latitude) + ' lon: ' + str(longitude) + ' depth: ' + depth + ' mag: ' + mag + ' id: ' + str(id))
             rss_df = pd.concat([rss_df, pd.DataFrame({'id' : uuid.uuid4().int,
                                                       'date' : date,
                                                       'latitude' : latitude,
                                                       'longitude' : longitude,
                                                       'depth' : depth, 
                                                       'magnitude' : mag}, index=[0])])
-            entries = [datetime, time_utc.timestamp(), latitude,
+            datetime_str = date + ',' + time
+            time_utc = get_utc_time(datetime_str,config["time_zone"])
+            datetime_utc_str = time_utc.strftime("%Y/%m/%dT%H:%M:%S")
+            
+            entries = [datetime_utc_str, time_utc.timestamp(), latitude,
                        longitude, depth, mag,
                        False, False, False, 0]            
 
             cursor.execute("SELECT rowid FROM rss WHERE rss_id = ?", (id,))
             db_result = cursor.fetchone()
             if not db_result:
+               print('ADDING: date local: ', date + ',' + time + ' date_utc: ' + datetime_utc_str + ' lat: ' + str(latitude) + ' lon: ' + str(longitude) + ' depth: ' + depth + ' mag: ' + mag + ' id: ' + str(id))
+               print(entries)
+               cursor.execute(add_entry, entries)
+               new_entries += 1
 
-        tt.sleep(30)
+        print(new_entries, " added to the database.")
+        con.commit()
+        
+
+        tt.sleep(300)
 
 
 

@@ -32,6 +32,14 @@ def render_tweet_info(tweet, t_zone):
         time_local, is_dst=None).astimezone(pytz.utc)
     return (time_utc, latitude, longitude, depth, magnitude)
 
+def get_utc_time(datetime_str, t_zone): 
+    '''
+    The format should be given in YYYY-MM-DD,HH:MM:SS
+    '''
+    time_local = datetime.strptime(datetime_str, '%Y-%m-%d,%H:%M:%S')
+    time_utc = pytz.timezone(t_zone).localize(
+        time_local, is_dst=None).astimezone(pytz.utc)
+    return time_utc
 def load_configuration():
     root_crsmex = os.environ["ROOT_CRSMEX"]
     config_file = open(os.path.join(root_crsmex, 'config.json'))
