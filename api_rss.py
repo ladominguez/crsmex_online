@@ -77,8 +77,8 @@ if __name__ == '__main__':
             datetime_utc_str = time_utc.strftime("%Y/%m/%dT%H:%M:%S")
             
             entries = [datetime_utc_str, time_utc.timestamp(), latitude,
-                       longitude, depth, mag,
-                       False, False, False, 0]            
+                       longitude, depth, mag, id,
+                       False, False, False]            
 
             cursor.execute("SELECT rowid FROM rss WHERE rss_id = ?", (id,))
             db_result = cursor.fetchone()
