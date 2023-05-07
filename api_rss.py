@@ -88,11 +88,11 @@ if __name__ == '__main__':
                cursor.execute(add_entry, entries)
                new_entries += 1
 
-        print(new_entries, " added to the database.")
+        log.debug(new_entries, " added to the database.")
         con.commit()
         
 
-        tt.sleep(300)
+        tt.sleep(config["waiting_time"])
 
 
 
