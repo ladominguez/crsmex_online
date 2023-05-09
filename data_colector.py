@@ -78,6 +78,51 @@ def stp_generator():
     con.close
     return None
 
+def stp_generator_rss():
+    # Connecting to database
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    cmd_sql = r"SELECT datetime, latitude, longitude, depth, rss_id, nearby_sta FROM rss WHERE data_downloaded == 0;"
+    df = pd.read_sql_query(cmd_sql, con)
+    stations = pd.read_pickle(os.path.join(root_crsmex, config["stations"]))
+
+
+    for index, entry in df.iterrows():
+
+        eq_loc = (entry['latitude'], entry['longitude'])
+        distance = []
+        if not os.path.isdir(os.path.join(root_crsmex, 'tmp', entry['rss_id'])):
+            os.mkdir(os.path.join(root_crsmex, 'tmp', entry['rss_id']))
+
+        if not os.path.isfile(os.path.join(root_crsmex, 'tmp', entry['rss_id'], 'get_data.stp')):
+            fid = open(os.path.join(root_crsmex, 'tmp',
+                                    entry['rss_id'], 'get_data.stp'), 'w')
+        else:
+            continue # get_data.stp was generated although no data was downloaded.
+
+        for n, station in stations.iterrows():
+            sta_loc = (station['stla'], station['stlo'])
+            distance.append(great_circle(eq_loc, sta_loc).km)
+        stations['distance'] = distance
+        starttime = datetime.strptime(
+            entry['datetime'], '%Y/%m/%dT%H:%M:%S') - timedelta(seconds=config["before_time"])
+
+        nearby_stations = stations.loc[stations['distance']
+                                    <= config["max_dist"]]['station'].to_list()
+        for close_sta in nearby_stations:
+            stp_cmd = 'WIN IG ' + close_sta.strip() + ' HH_ ' + starttime.strftime('%Y/%m/%d,%H:%M:%S' +
+                                                                                ' +' + str(config['record_length'])) + 's\n'
+            fid.write(stp_cmd)
+        
+        update_nearby_sta = '''UPDATE rss
+                               SET nearby_sta = ?
+                               WHERE rss_id = ?'''
+        cursor.execute(update_nearby_sta, (','.join(nearby_stations), entry['rss_id']))
+        con.commit()
+    con.close
+    return None
+
+
 def data_colector():
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cmd_sql = r"select datetime, latitude, longitude, depth, tweet_id, nearby_sta from twitter where data_downloaded == 0;"
@@ -96,10 +141,28 @@ def data_colector():
                 except TimeoutExpired:
                     p.kill()
                     log.info('Data requested for ' + directory + ' timeout. ')
-                    print('Data requested for ' + directory + ' timeout. ')
-    
-                
-               
+                    print('Data requested for ' + directory + ' timeout. ') 
+    return None
+
+def data_colector_rss():
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cmd_sql = r"select datetime, latitude, longitude, depth, rss_id, nearby_sta from rss where data_downloaded == 0;"
+    df = pd.read_sql_query(cmd_sql, con)
+
+    directories = os.listdir(os.path.join(root_crsmex,'tmp'))
+    for directory in directories:
+        if os.path.isdir(os.path.join(root_crsmex,'tmp',directory)):
+            os.chdir(os.path.join(root_crsmex,'tmp',directory))
+            if os.path.isfile(config['stp_file_name']) and  not df.loc[df['rss_id'] == directory].empty:
+                log.debug('Requesting data for ' + directory + ' ...')
+                print('Requesting data for ' + directory + ' ...')
+                p = Popen(config["SSNstp"],stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL, bufsize=0) 
+                try:
+                    outs, err = p.communicate(input.encode('ascii'),timeout = config['timeout'])
+                except TimeoutExpired:
+                    p.kill()
+                    log.info('Data requested for ' + directory + ' timeout. ')
+                    print('Data requested for ' + directory + ' timeout. ') 
     return None
 
 def check_collected_data():
@@ -114,17 +177,46 @@ def check_collected_data():
         if len(results) >= 2:
             raise NameError('Duplicated records with the same tweet id.')
         print('directory: ', directory) 
-        stations, tweet_id = results[0]
+        stations, tweeet_id = results[0]
         Nsta=len(stations.split(','))
         files_found = glob.glob(os.path.join(root_crsmex,'tmp',tweet_id,'*.sac'))
         print('Expected: ', Nsta, ' tweet_id: ', tweet_id, ' sta_collected: ', str(len(files_found)/3), ' perc: ', str(len(files_found)*100/(3*Nsta)))
         
         if (len(files_found)/(Nsta*3)) >= 0.7:
             print('UPDATING: ', tweet_id)
-            update_downloaded_data = '''UPDATE twitter
+            update_downloaded_data = '''UPDATE rss
                                    SET data_downloaded = ?
                                    WHERE tweet_id = ?'''
             cursor.execute(update_downloaded_data, (True, tweet_id))
+            con.commit()
+    con.close()
+
+    return None
+
+def check_collected_data_rss():
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
+    cursor = con.cursor()
+    directories = os.listdir(os.path.join(root_crsmex,'tmp'))
+
+    for directory in directories:
+        # cmd_sql = r"SELECT nearby_sta, tweet_id FROM twitter WHERE tweet_id= " + directory + ";"
+        cmd_sql = r"SELECT nearby_sta, rss_id FROM rss WHERE rss_id= " + directory + ";"
+        cursor.execute(cmd_sql)
+        results = cursor.fetchall()
+        if len(results) >= 2:
+            raise NameError('Duplicated records with the same rss id.')
+        print('directory: ', directory) 
+        stations, rss_id = results[0]
+        Nsta=len(stations.split(','))
+        files_found = glob.glob(os.path.join(root_crsmex,'tmp',rss_id,'*.sac'))
+        print('Expected: ', Nsta, ' rss_id: ', rss_id, ' sta_collected: ', str(len(files_found)/3), ' perc: ', str(len(files_found)*100/(3*Nsta)))
+        
+        if (len(files_found)/(Nsta*3)) >= 0.7:
+            print('UPDATING: ', tweet_id)
+            update_downloaded_data = '''UPDATE rss
+                                   SET data_downloaded = ?
+                                   WHERE rss_id = ?'''
+            cursor.execute(update_downloaded_data, (True, rss_id))
             con.commit()
     con.close()
 

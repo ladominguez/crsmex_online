@@ -90,8 +90,14 @@ if __name__ == '__main__':
 
         log.debug(new_entries, " added to the database.")
         con.commit()
-        
+        con.close()
 
+        print('Generating stp files: ')
+        stp_generator_rss()
+        print('Collecting data.')
+        data_colector_rss()
+        check_collected_data_rss()
+        exit()      
         tt.sleep(config["waiting_time"])
 
 
