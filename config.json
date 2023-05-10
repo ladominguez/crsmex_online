@@ -20,6 +20,6 @@
 "time_zone" : "America/Mexico_City",
 "timeout": 50,
 "vel_model" : "taup/ssn.npz",
-"waiting_time" : 900,
+"waiting_time" : 90,
 "window" : 25.5
 }
