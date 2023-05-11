@@ -33,6 +33,10 @@ fh.setFormatter(logging.Formatter(FORMAT))
 fh.setLevel(logging.DEBUG)
 log.addHandler(fh)
 
+# SQL commands
+add_entry = '''INSERT INTO rss(datetime, unixtime, latitude, 
+                                        longitude, depth, mag, rss_id, 
+                                        data_downloaded, analyzed, repeater) VALUES (?,?,?,?,?,?,?,?,?,?);'''
 
 def stp_generator():
     # Connecting to database
@@ -237,6 +241,57 @@ def _reset_downnloads_in_database():
     con.close()
     return None
 
+def _add_records_from_catalog(filename):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+
+    file = open(filename)
+    Lines = file.readlines()
+
+    for line in Lines:
+        if line[0] != "\"":
+            print(line.strip())
+            date = line.strip().split(",")[0]
+            time = line.strip().split(",")[1]
+            mag = line.strip().split(",")[2]
+            latitude = line.strip().split(",")[3]
+            longitude = line.strip().split(",")[4]
+            depth = line.strip().split(",")[5]
+            rss_id = int(date.replace('-','') + time.replace(':','') + "{:5.2f}".format(float(latitude)).replace('.',''))
+
+            datetime_str = (date + ',' + time).replace('-','/')
+            time_unix = datetime.strptime(datetime_str, '%Y/%m/%d,%H:%M:%S')
+
+            #print('id: ', rss_id)
+            #print('date: ', date)
+            #print('time: ', time)
+            #print('latitude: ', latitude)
+            #print('longitude: ', longitude)
+            #print('depth: ', depth)
+            #print('magnitude: ', mag)
+            #print('datetime: ', datetime_str)
+            #print('unix time: ', time_unix.timestamp())
+            
+            entries = [datetime_str, time_unix.timestamp(), latitude, longitude, depth, 
+                       mag, rss_id, False, False, False]
+            
+            cursor.execute("SELECT rowid FROM rss WHERE rss_id = ?", (rss_id,))
+            db_result = cursor.fetchone()           
+
+            if not db_result:
+               print('ADDING: date local: ', date + ',' + time + ' date_utc: ' + datetime_str + ' lat: ' + str(latitude) + ' lon: ' + str(longitude) + ' depth: ' + depth + ' mag: ' + mag + ' id: ' + str(rss_id))
+               print(entries)
+               cursor.execute(add_entry, entries) 
+               con.commit()
+            #exit()
+        
+
+
+        
+
+
+
+    return None
 
 
 def possible_sequences(tweet_id, r_max=50):
@@ -244,7 +299,7 @@ def possible_sequences(tweet_id, r_max=50):
     cursor = con.cursor()
 
     cmd_sql1 = '''SELECT latitude, longitude, nearby_sta FROM twitter WHERE data_downloaded == 1 AND tweet_id = '''  + str(tweet_id) + ''';''';
-    cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters;'''
+    cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters''';
     #twitter = pd.read_sql_query(cmd_sql1, con)
     repeaters = pd.read_sql_query(cmd_sql2, con)    
     #cursor = con.cursor()
@@ -274,7 +329,7 @@ def possible_sequences(tweet_id, r_max=50):
 
 
 if __name__ == '__main__':
-    stp_generator()
+    #stp_generator()
     #data_colector()
 
     #check_collected_data()
@@ -283,3 +338,6 @@ if __name__ == '__main__':
     ##repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
     ##plot_sequence_candidates(tweet_id, repeating_list) 
     #_reset_downnloads_in_database()
+
+    filename = 'inputs/SSNMX_catalogo_20230101_20230430_utc.csv'
+    _add_records_from_catalog(filename)

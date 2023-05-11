@@ -65,7 +65,7 @@ if __name__ == '__main__':
             longitude = all_data[1].split()[1].split('/')[1]
             depth = all_data[2].split()[1]
             mag = entry['title'].split(',')[0]
-            id = int(date.replace('-','') + time.replace(':','') + latitude.replace('.',''))
+            id = int(date.replace('-','') + time.replace(':','') + "{:5.2f}".format(float(latitude)).replace('.','')) #latitude.replace('.',''))
             rss_df = pd.concat([rss_df, pd.DataFrame({'id' : uuid.uuid4().int,
                                                       'date' : date,
                                                       'latitude' : latitude,
