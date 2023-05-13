@@ -259,8 +259,8 @@ def _add_records_from_catalog(filename):
             depth = line.strip().split(",")[5]
             rss_id = int(date.replace('-','') + time.replace(':','') + "{:5.2f}".format(float(latitude)).replace('.',''))
 
-            datetime_str = (date + ',' + time).replace('-','/')
-            time_unix = datetime.strptime(datetime_str, '%Y/%m/%d,%H:%M:%S')
+            datetime_str = (date + 'T' + time).replace('-','/')
+            time_unix = datetime.strptime(datetime_str, '%Y/%m/%dT%H:%M:%S')
 
             #print('id: ', rss_id)
             #print('date: ', date)
@@ -329,7 +329,10 @@ def possible_sequences(tweet_id, r_max=50):
 
 
 if __name__ == '__main__':
-    #stp_generator()
+    #filename = 'inputs/SSNMX_catalogo_20230101_20230430_utc.csv'
+    #_add_records_from_catalog(filename)
+
+    stp_generator()
     #data_colector()
 
     #check_collected_data()
@@ -339,5 +342,3 @@ if __name__ == '__main__':
     ##plot_sequence_candidates(tweet_id, repeating_list) 
     #_reset_downnloads_in_database()
 
-    filename = 'inputs/SSNMX_catalogo_20230101_20230430_utc.csv'
-    _add_records_from_catalog(filename)
