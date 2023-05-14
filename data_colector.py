@@ -297,9 +297,10 @@ def _add_records_from_catalog(filename):
 def possible_sequences(tweet_id, r_max=50):
     con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
     cursor = con.cursor()
-
+    # For Twitter table
     cmd_sql1 = '''SELECT latitude, longitude, nearby_sta FROM twitter WHERE data_downloaded == 1 AND tweet_id = '''  + str(tweet_id) + ''';''';
     cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters''';
+
     #twitter = pd.read_sql_query(cmd_sql1, con)
     repeaters = pd.read_sql_query(cmd_sql2, con)    
     #cursor = con.cursor()
@@ -326,6 +327,38 @@ def possible_sequences(tweet_id, r_max=50):
     con.close()
     return id_list
 
+def possible_sequences_rss(rss_id, r_max=50):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
+    cursor = con.cursor()
+    # For RSS table
+    cmd_sql1 = '''SELECT latitude, longitude, nearby_sta FROM rss WHERE data_downloaded == 1 AND rss_id = '''  + str(rss_id) + ''';''';
+    cmd_sql2 = '''SELECT latitude, longitude, id FROM repeaters''';
+
+    #twitter = pd.read_sql_query(cmd_sql1, con)
+    repeaters = pd.read_sql_query(cmd_sql2, con)    
+    #cursor = con.cursor()
+    cursor.execute(cmd_sql1)
+
+    results = cursor.fetchall()
+    if not results:
+        #print(cmd_sql1)
+        return []
+    
+    #for index1, tweet in twitter.iterrows():
+    id_list = []
+    rss_lat, rss_lon,  nearby_sta = results[0] 
+    #print('Length repeaters: ', len(repeaters))
+    for index2, repeat in repeaters.iterrows():
+        eq_rss = (rss_lat, rss_lon)
+        eq_repeat = (repeat['latitude' ], repeat['longitude'])
+        distance = great_circle(eq_rss, eq_repeat).km
+        #print(tweet['tweet_id'],distance)
+        if distance <= r_max:
+            #print(distance, repeat['ID'], tweet_id, eq_tweet)
+            id_list.append(int(repeat['ID']))
+        
+    con.close()
+    return id_list
 
 
 if __name__ == '__main__':

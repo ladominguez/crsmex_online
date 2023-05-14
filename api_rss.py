@@ -92,11 +92,21 @@ if __name__ == '__main__':
         con.commit()
         #con.close()
 
-        print('Generating stp files: ')
-        stp_generator_rss()
-        print('Collecting data.')
-        data_colector_rss()
-        check_collected_data_rss()
+        #print('Generating stp files: ')
+        #stp_generator_rss()
+        #print('Collecting data.')
+        #data_colector_rss()
+        #check_collected_data_rss()
+
+        directories = glob.glob("./tmp/[0-9]*")
+        for directory in directories:
+            rss_id = directory.split('/')[2]
+            print('rss: ', rss_id)
+            repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
+            if repeating_list:
+                print('list: ', repeating_list)
+                print(rss_id, repeating_list)
+                find_new_repeaters_rss(rss_id, repeating_list, plotting = False)
         tt.sleep(config["waiting_time"])
 
 
