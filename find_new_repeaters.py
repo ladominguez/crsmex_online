@@ -513,10 +513,13 @@ if __name__ == '__main__':
     #tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
     #directories = glob.glob("./tmp/1635098967141916673")    
-    for directory in directories:
-        #print('Processing: ', directory)
-        tweet_id = directory.split('/')[2]
-        repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
+    for k, directory in enumerate(directories):
+        if k == 200:
+            break
+        print('Processing: ', directory)
+        rss_id = directory.split('/')[2]
+        repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
+        print('repeating_list: ', repeating_list)
         #repeating_list = [297]
         if repeating_list:
             #print('list: ', repeating_list)
