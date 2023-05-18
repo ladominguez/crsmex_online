@@ -514,10 +514,11 @@ if __name__ == '__main__':
     directories = glob.glob("./tmp/[0-9]*")
     #directories = glob.glob("./tmp/1635098967141916673")    
     for k, directory in enumerate(directories):
-        if k == 200:
+        if k == 5:
             break
         print('Processing: ', directory)
         rss_id = directory.split('/')[2]
+        print('rss_id: ', rss_id)
         repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
         print('repeating_list: ', repeating_list)
         #repeating_list = [297]
