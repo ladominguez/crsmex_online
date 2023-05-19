@@ -216,7 +216,7 @@ def check_collected_data_rss():
         print('Expected: ', Nsta, ' rss_id: ', rss_id, ' sta_collected: ', str(len(files_found)/3), ' perc: ', str(len(files_found)*100/(3*Nsta)))
         
         if (len(files_found)/(Nsta*3)) >= 0.7:
-            print('UPDATING: ', tweet_id)
+            print('UPDATING: ', rss_id)
             update_downloaded_data = '''UPDATE rss
                                    SET data_downloaded = ?
                                    WHERE rss_id = ?'''
@@ -340,6 +340,7 @@ def possible_sequences_rss(rss_id, r_max=50):
     cursor.execute(cmd_sql1)
 
     results = cursor.fetchall()
+    print('results: ', results)
     if not results:
         #print(cmd_sql1)
         return []

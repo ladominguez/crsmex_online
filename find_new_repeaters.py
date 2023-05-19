@@ -507,14 +507,14 @@ def modify_repeater_database(tweet_id, matching_sequence):
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
-    #check_collected_data()
-    #exit()
+    check_collected_data_rss()
+    exit()
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
-    directories = glob.glob("./tmp/[0-9]*")
-    #directories = glob.glob("./tmp/1635098967141916673")    
+    #directories = glob.glob("./tmp/[0-9]*")
+    directories = glob.glob("./tmp/202302222257321679")    
     for k, directory in enumerate(directories):
-        if k == 5:
+        if k == 1:
             break
         print('Processing: ', directory)
         rss_id = directory.split('/')[2]
