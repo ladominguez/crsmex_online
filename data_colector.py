@@ -201,7 +201,7 @@ def check_collected_data_rss():
     con = sqlite3.connect(os.path.join(root_crsmex, config['database'])) 
     cursor = con.cursor()
     directories = os.listdir(os.path.join(root_crsmex,'tmp'))
-
+    
     for directory in directories:
         # cmd_sql = r"SELECT nearby_sta, tweet_id FROM twitter WHERE tweet_id= " + directory + ";"
         cmd_sql = r"SELECT nearby_sta, rss_id FROM rss WHERE rss_id= " + directory + ";"
@@ -340,7 +340,7 @@ def possible_sequences_rss(rss_id, r_max=50):
     cursor.execute(cmd_sql1)
 
     results = cursor.fetchall()
-    print('results: ', results)
+    #print('results: ', results)
     if not results:
         #print(cmd_sql1)
         return []
@@ -349,11 +349,11 @@ def possible_sequences_rss(rss_id, r_max=50):
     id_list = []
     rss_lat, rss_lon,  nearby_sta = results[0] 
     #print('Length repeaters: ', len(repeaters))
-    for index2, repeat in repeaters.iterrows():
+    for _, repeat in repeaters.iterrows():
         eq_rss = (rss_lat, rss_lon)
         eq_repeat = (repeat['latitude' ], repeat['longitude'])
         distance = great_circle(eq_rss, eq_repeat).km
-        #print(tweet['tweet_id'],distance)
+        #print(rss_id,distance)
         if distance <= r_max:
             #print(distance, repeat['ID'], tweet_id, eq_tweet)
             id_list.append(int(repeat['ID']))

@@ -1,7 +1,7 @@
 #from re import I
 #from turtle import color
 #from urllib.parse import _NetlocResultMixinStr
-from obspy.core import read
+from obspy.core import read, Stream
 from obspy.signal.trigger import ar_pick, pk_baer
 from matplotlib import pyplot as plt
 from util import load_configuration
@@ -49,13 +49,13 @@ slice_after  = 15
 def normalize(array):
     return array/max(abs(array))
 
-
-
-def phase_picker_rss(directory,plotting=False):
-    try:
-        stream=read(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
-    except:
-        return None
+def phase_picker_rss(directory,plotting = False, output_phase = False):
+    stream = Stream()
+    for filename in glob.glob(os.path.join(root_crsmex,'tmp',directory,'*.sac')):
+        try:
+            stream += read(filename)
+        except:
+            continue
 
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
@@ -87,8 +87,28 @@ def phase_picker_rss(directory,plotting=False):
         if st_sta:
             error_P = False
             error_S = False
-            ds = st_sta.select(channel='HHZ')[0].stats.sampling_rate
-            tstart = st_sta.select(channel='HHZ')[0].stats.starttime
+
+            try:
+                ds = st_sta.select(channel='HHZ')[0].stats.sampling_rate
+            except IndexError:
+                try:
+                    ds = st_sta.select(channel='HHE')[0].stats.sampling_rate
+                except IndexError:
+                    try:
+                        ds = st_sta.select(channel='HHN')[0].stats.sampling_rate
+                    except IndexError:
+                        pass
+
+            try:
+                tstart = st_sta.select(channel='HHZ')[0].stats.starttime
+            except IndexError:
+                try:
+                    tstart = st_sta.select(channel='HHE')[0].stats.starttime
+                except IndexError:
+                    try:
+                        tstart = st_sta.select(channel='HHN')[0].stats.starttime
+                    except IndexError:
+                        pass
 
             distance = great_circle((latitude_eq, longitude_eq),(st_sta[0].stats.sac.stla, st_sta[0].stats.sac.stlo)).kilometers/111.19
             try:
@@ -127,9 +147,8 @@ def phase_picker_rss(directory,plotting=False):
                     continue
             else:
                 try:
-                    p_pick_samples, _ = pk_baer(tz, slice_data.select(channel='HHZ')[0].stats.sampling_rate, 
-                                                20, 60, 7.0, 12.0, 100, 100)
-                except ValueError:
+                    p_pick_samples, _ = pk_baer(tz, slice_data.select(channel='HHZ')[0].stats.sampling_rate, 20, 60, 7.0, 12.0, 100, 100)
+                except IndexError:
                     error_P = True
                     error_S = True
                 else:
@@ -160,7 +179,8 @@ def phase_picker_rss(directory,plotting=False):
                         'depth' : depths,'dist' : dist,
                         'tslice_start' : tslice_start_list,
                         'tslice_stop' : tslice_stop_list})
-    print(phases)
+    if output_phase:
+        print(phases)
     phases.to_pickle(os.path.join(root_crsmex,'tmp',directory,'phases.pkl'))
 
     if plotting:
@@ -170,10 +190,13 @@ def phase_picker_rss(directory,plotting=False):
 
         for m, row in enumerate(phases.sort_values(by=['dist']).itertuples()):
             stream.select(channel='HHZ', station = row.station).filter("highpass", freq=2.0)
-            ax[m,0].plot(stream.select(channel='HHZ', station = row.station )[0].times(), 
-            normalize(stream.select(channel='HHZ', station = row.station)[0].data),
-                      linewidth=0.1,color='k',
-                      label=sta)
+            try:
+                ax[m,0].plot(stream.select(channel='HHZ', station = row.station )[0].times(), 
+                normalize(stream.select(channel='HHZ', station = row.station)[0].data),
+                          linewidth=0.1,color='k',
+                          label=sta)
+            except:
+                continue
             ax[m,0].axvline(row.tslice_start,color='black',ls='--')
             ax[m,0].axvline(row.tslice_stop,color='black',ls='-')
             ax[m,0].axvline(row.P,color='red',ls='--')
@@ -182,7 +205,7 @@ def phase_picker_rss(directory,plotting=False):
             ax[m,0].autoscale(enable=True, axis='x', tight=True)
             ax[m,0].set_xlabel('time (s)')
             #ax[m,0].set_title('Station: ' + row.station,fontsize=16)
-            ax[m,0].text(1.1*(phases['S'].max()+5), 0.2, row.station, fontsize= 14) 
+            ax[m,0].text(1.1*(phases['S'].max()), 0.2, row.station, fontsize= 14) 
             ax[m,0].text(phases['P'].min()-12 , 0.4, '%4.1f'%(row.dist*111.1) + 'km', fontsize= 8) 
             ax[m,0].grid(which='major')
             ax[m,0].grid(which='minor')
@@ -192,7 +215,7 @@ def phase_picker_rss(directory,plotting=False):
 
                 #ax[m,0].text(0.9*st_sta.select(channel='HHZ')[0].times().max(), 0.2, sta, fontsize= 14)
         #fig.tight_layout()
-        fig.suptitle('Tweet id: ' + directory)
+        fig.suptitle('RSS id: ' + directory)
         fig.savefig(os.path.join(root_crsmex,'tmp',directory,'picks.png'))
         plt.close()
     del stream
@@ -201,13 +224,13 @@ def phase_picker_rss(directory,plotting=False):
     except TypeError:
         return None
 
-
-
 def phase_picker(directory,plotting=False):
-    try:
-        stream=read(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
-    except:
-        return None
+    stream = Stream()
+    for filename in glob.glob(os.path.join(root_crsmex,'tmp',directory,'*.sac')):
+        try:
+            stream += read(filename)
+        except:
+            continue
 
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
@@ -352,15 +375,21 @@ def phase_picker(directory,plotting=False):
         return phases
     except TypeError:
         return None
+    return True
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', type=str)
     parser.add_argument('-p', action='store_true', help='-p for plotting.')
+    parser.add_argument('-o', action='store_true', help='-o display phase table.')
     args = parser.parse_args()
     directory = args.directory
     plotting = args.p
+    output_phases = args.o
+
+    #directory = "202303041044001680"
+    #plotting = True
     
     #for directory in os.listdir(os.path.join(root_crsmex,'tmp')):    
         #directory='1581993473430802434'
@@ -369,6 +398,6 @@ if __name__ == '__main__':
     #directory = '1587083891046752257'
     #plotting = True
     #print(os.path.join(root_crsmex,'tmp',directory,'*.sac'))
-    phases = phase_picker_rss(directory,plotting=plotting)
+    phases = phase_picker_rss(directory,plotting=plotting,output_phase = output_phases)
     #print(phases.sort_values(by=['dist']))
 

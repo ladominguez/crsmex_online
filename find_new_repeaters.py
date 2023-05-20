@@ -268,7 +268,7 @@ def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
         stations_seq = list(sequence_group.attrs.get('stations'))
         sac = read(os.path.join(root_crsmex,'tmp',str(rss_id),'*Z.sac'))
         stations_rss = [tr.stats.sac.kstnm.strip() for tr in sac]
-        process_stations = list(set(stations_seq).intersection(set(stations_rss)))
+        process_stations = list(set(stations_seq).intersection(set(stations_rss))
         phases = read_pickle(os.path.join(root_crsmex,'tmp',str(rss_id),'phases.pkl'))
         phases.set_index("station", drop = False, inplace = True)
         stations_sequence[sequence] = process_stations
@@ -405,7 +405,7 @@ def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
                                                #tshift_thresholds[match][sta_detected])):
 
                 if not m: # master label
-                    label = ('%s - M%.2f'%_get_twitter_info(1635098967141916673)).replace('T',',')
+                    label = ('%s - M%.2f'%_get_rss_info(rss_id)).replace('T',',')
                 else:
                     label = datetimes_repeater[match][sta_detected][m-1] + ", M" + '%3.1f' % (magnitude_repeater[match][sta_detected][m-1]) + " cc: " + '%4.2f' % (cc_thresholds[match][sta_detected][m-1])
 
@@ -437,29 +437,20 @@ def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
     # End sequence loop
     return RepeaterFound, matching_sequence, cc_thresholds
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def _get_twitter_info(tweet_id):
     con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
     cursor = con.cursor()
     get_twitter_info = '''SELECT datetime, mag FROM twitter WHERE tweet_id = ?;'''
     cursor.execute(get_twitter_info,(tweet_id,))
-    db_results = cursor.fetchone()
-    
+    db_results = cursor.fetchone() 
+    return db_results 
+
+def _get_rss_info(rss_id):
+    con = sqlite3.connect(os.path.join(root_crsmex, config['database']))
+    cursor = con.cursor()
+    get_rss_info = '''SELECT datetime, mag FROM rss WHERE rss_id = ?;'''
+    cursor.execute(get_rss_info,(rss_id,))
+    db_results = cursor.fetchone() 
     return db_results 
 
 def modify_repeater_database(tweet_id, matching_sequence):
@@ -507,25 +498,25 @@ def modify_repeater_database(tweet_id, matching_sequence):
 if __name__ == '__main__':
     #stp_generator()
     #data_colector()
-    check_collected_data_rss()
-    exit()
+    #check_collected_data_rss()
+    #exit()
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
-    #directories = glob.glob("./tmp/[0-9]*")
-    directories = glob.glob("./tmp/202302222257321679")    
+    directories = glob.glob("./tmp/[0-9]*")
+    #directories = glob.glob("./tmp/202301190706191867")    
     for k, directory in enumerate(directories):
-        if k == 1:
+        if k == 200:
             break
         print('Processing: ', directory)
         rss_id = directory.split('/')[2]
         print('rss_id: ', rss_id)
         repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
-        print('repeating_list: ', repeating_list)
+        #print('repeating_list: ', repeating_list)
         #repeating_list = [297]
         if repeating_list:
             #print('list: ', repeating_list)
             #print(tweet_id, repeating_list)
-            find_new_repeaters(tweet_id, repeating_list, plotting = True)
+            find_new_repeaters_rss(rss_id, repeating_list, plotting = True)
 
 #        if not repeating_list:
 
