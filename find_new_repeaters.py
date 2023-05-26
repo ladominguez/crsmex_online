@@ -1,5 +1,5 @@
 from re import I
-from obspy.core import read
+from obspy.core import read, Stream
 import os
 import h5py
 import sqlite3
@@ -239,6 +239,15 @@ def find_new_repeaters(tweet_id, possible_sequences, plotting=False):
     # End sequence loop
     return RepeaterFound, matching_sequence, cc_thresholds
 
+def _read_sac_files(filename_wildcard):
+    stream = Stream()
+    for filename in glob.glob(filename_wildcard):
+        try:
+            stream += read(filename)
+        except:
+            continue
+    
+    return stream
 
 def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
     times_repeater = {}
@@ -266,9 +275,9 @@ def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
         #cc_thresholds = []
         sequence_group = h5.get('S' + '%05d'%(sequence))
         stations_seq = list(sequence_group.attrs.get('stations'))
-        sac = read(os.path.join(root_crsmex,'tmp',str(rss_id),'*Z.sac'))
+        sac = _read_sac_files(os.path.join(root_crsmex,'tmp',str(rss_id),'*Z.sac'))
         stations_rss = [tr.stats.sac.kstnm.strip() for tr in sac]
-        process_stations = list(set(stations_seq).intersection(set(stations_rss))
+        process_stations = list(set(stations_seq).intersection(set(stations_rss)))
         phases = read_pickle(os.path.join(root_crsmex,'tmp',str(rss_id),'phases.pkl'))
         phases.set_index("station", drop = False, inplace = True)
         stations_sequence[sequence] = process_stations
@@ -503,20 +512,23 @@ if __name__ == '__main__':
     #tweet_id=1582015080493092864
     #tweet_id = 1581813685726908417
     directories = glob.glob("./tmp/[0-9]*")
-    #directories = glob.glob("./tmp/202301190706191867")    
+    #directories = glob.glob("./tmp/202303041044001680")    
+    count = 0
     for k, directory in enumerate(directories):
-        if k == 200:
-            break
-        print('Processing: ', directory)
+        #if k == 200:
+        #    break
         rss_id = directory.split('/')[2]
-        print('rss_id: ', rss_id)
         repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
         #print('repeating_list: ', repeating_list)
+        print(k)
         #repeating_list = [297]
         if repeating_list:
             #print('list: ', repeating_list)
             #print(tweet_id, repeating_list)
+            count += 1
             find_new_repeaters_rss(rss_id, repeating_list, plotting = True)
+    
+    print('Count: ', count)
 
 #        if not repeating_list:
 
