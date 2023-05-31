@@ -5,4 +5,5 @@ logger.txt
 *.sac
 */*.sac
 tmp/*
+tmp2/*
 inputs/SSN*

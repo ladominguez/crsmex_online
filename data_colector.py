@@ -363,13 +363,13 @@ def possible_sequences_rss(rss_id, r_max=50):
 
 
 if __name__ == '__main__':
-    #filename = 'inputs/SSNMX_catalogo_20230101_20230430_utc.csv'
+    #filename = 'inputs/SSNMX_catalogo_20160126_20160126_utc_GRO.csv'
     #_add_records_from_catalog(filename)
 
-    stp_generator()
-    #data_colector()
+    stp_generator_rss()
+    data_colector_rss()
 
-    #check_collected_data()
+    check_collected_data_rss()
 
     #tweet_id=1582015080493092864
     ##repeating_list = possible_sequences(tweet_id, r_max = config['radius'])
