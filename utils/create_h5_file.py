@@ -7,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 #from pprint import pprint
 
-root = '/Users/antonio/Dropbox/BSL/CRSMEX/Dendrograms/2020AGO07/sequence_xc9500_coh9500'
+root = '/Users/antonio/Dropbox/BSL/CRSMEX/make_links/20230627'
 input1 = 'locmag.dat'
 input2 = 'station_ids.info'
 output = '../crsmex.h5'
@@ -34,8 +34,10 @@ with h5py.File(output, 'w') as hdf:
     waveforms = {}
     for key, directory in enumerate(tqdm(ls_dir)):
         sequence = directory.split('/')[-1]
+        #print(sequence)
         df = pd.read_csv(directory + '/' + input1, delim_whitespace=True,
                names=colnames, dtype=types)
+        #print(df)
         sta = pd.read_csv(directory + '/' + input2, names=['station'])
         N = int(sequence.split('_N')[1])
         group_name = 'S' + sequence.split('_')[1]        

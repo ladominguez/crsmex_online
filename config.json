@@ -1,10 +1,10 @@
 {
 "before_time" : 10,
-"catalog" : "../inputs/CATALOG_2001_2022.DAT",
+"catalog" : "../inputs/CATALOG_2001_2023_clean.DAT",
 "cc_lim" : 0.7,
 "database" : "catalog.db",
 "h5_file" : "crsmex.h5",
-"input_crsmex" : "inputs/time_intervals_xc9500_coh9500.filter.dat",
+"input_crsmex" : "inputs/time_intervals.20230627.dat",
 "low" : 2,
 "high" : 8,
 "poles" : 4, 
