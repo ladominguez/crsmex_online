@@ -7,7 +7,7 @@ This code automatically detects repeating earthquakes reported by the Mexican Se
 sequences previously reported. In this case, we are using a 22-year catalog from 2001-2022.
 
 
-# Instalation.
+# Installation.
 1. To be able to read the Twitter fee from SSN, you must have a developer [Twitter acccount](https://datascienceparichay.com/article/get-data-from-twitter-api-in-python-step-by-step-guide/).
 2. Once you obtain your credentials (`API_KEY_TWITTER`,`API_KEY_SECRET_TWITTER`), you must save them as enviromental
    variables. For security, <b>NEVER</b> include this values within your code as they may get posted easily. Add you
