@@ -297,7 +297,7 @@ def find_new_repeaters_rss(rss_id, possible_sequences, plotting=False):
             waveforms = sequence_group.get(sta_rss)
 
             master_rss = sac.select(station=sta_rss)
-            master_rss.decimate(5)
+            master_rss.decimate(5,no_filter=True)
             master = master_rss[0].data
             t_master = master_rss[0].times() + master_rss[0].stats.sac.b - tp_master
             b, a = signal.butter(config["poles"],[config["low"],config["high"]], "bandpass", fs = master_rss[0].stats.sampling_rate)
@@ -520,7 +520,7 @@ if __name__ == '__main__':
         rss_id = directory.split('/')[2]
         repeating_list = possible_sequences_rss(rss_id, r_max = config['radius'])
         #print('repeating_list: ', repeating_list)
-        print(k)
+        #print(k)
         #repeating_list = [297]
         if repeating_list:
             #print('list: ', repeating_list)

@@ -364,7 +364,8 @@ def possible_sequences_rss(rss_id, r_max=50):
 
 if __name__ == '__main__':
     #filename = 'inputs/SSNMX_catalogo_20160126_20160126_utc_GRO.csv'
-    #_add_records_from_catalog(filename)
+    filename = 'inputs/SSNMX_catalogo_20160512_20160512_utc_OAX.csv'
+    _add_records_from_catalog(filename)
 
     stp_generator_rss()
     data_colector_rss()
