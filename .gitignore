@@ -8,3 +8,4 @@ tmp/*
 tmp2/*
 inputs/SSN*
 inputs/archive/
+debug/*
